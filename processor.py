@@ -4,9 +4,8 @@ import argparse
 import os
 
 def matchValue(line, columnNum, value):
-        print('The value of line[columnNum] is:', line[columnNum])
-        if(line[columnNum] == value):
-                return line
+    if(line[columnNum] == value):
+        return line
 
 def readCSV(datasetPath):
     csvFile = open(datasetPath, encoding="utf8", newline="")
@@ -27,8 +26,11 @@ def main():
     csvReader = readCSV(inputFilePath)
     outputFile = open(outputFilePath, 'w', encoding='utf8')
     csvWriter = csv.writer(outputFile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+    lineCount = 0
     for line in csvReader:
         if matchValue(line, args.column_number, args.column_value):
-                csvWriter.writerow(line)
+            lineCount += 1
+            csvWriter.writerow(line)
+    print('{lineCount} rows added to {fileName}'.format(lineCount=lineCount, fileName=args.output_file_name))
 
 main()
