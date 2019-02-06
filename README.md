@@ -2,7 +2,7 @@
 
 Dataset: [NFL Dataset](https://www.kaggle.com/kendallgillies/nflstatistics)
 
-## processor.py
+## matcher.py - Match rows containing a value and output them to a file
 
 #### Instructions
 * Create the two folders: `/dataset` and `/dataset/output`
@@ -26,6 +26,22 @@ optional arguments:
   ```
 
 Example:  `python3 matcher.py Career_Stats_Passing.csv Tom_Brady.csv 1 "Brady, Tom"`
+
+## cleaner.py - Clean a specific column and output all lines to a file
+
+```
+usage: cleaner.py [-h] input_file_name column_number
+
+Cleaning Columns of a CSV file
+
+positional arguments:
+  input_file_name  Name of the input CSV file [.csv included]
+  column_number    CSV Column Number to Clean
+
+optional arguments:
+  -h, --help       show this help message and exit
+```
+Example: `python3 cleaner.py career_passing_stats.csv 1`
 
 ## TODO:
 
