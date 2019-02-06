@@ -10,11 +10,10 @@ Dataset: [NFL Dataset](https://www.kaggle.com/kendallgillies/nflstatistics)
 * Output file will then be placed into `/dataset/output/`
 
 ```
-usage: processor.py [-h]
-                    input_file_name output_file_name column_number
-                    column_value
+usage: matcher.py [-h]
+                  input_file_name output_file_name column_number column_value
 
-Process a CSV file
+Match rows in a CSV file
 
 positional arguments:
   input_file_name   Name of the input CSV file [.csv included]
@@ -26,7 +25,7 @@ optional arguments:
   -h, --help        show this help message and exit
   ```
 
-Example:  `python3 processor.py Career_Stats_Passing.csv Tom_Brady.csv 1 "Brady, Tom"`
+Example:  `python3 matcher.py Career_Stats_Passing.csv Tom_Brady.csv 1 "Brady, Tom"`
 
 ## TODO:
 
