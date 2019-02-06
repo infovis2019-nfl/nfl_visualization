@@ -27,3 +27,10 @@ optional arguments:
   ```
 
 Example:  `python3 processor.py Career_Stats_Passing.csv Tom_Brady.csv 1 "Brady, Tom"`
+
+## TODO:
+
+1. Career stats need to be combined, current career stats are broken up by year
+2. Some players are missing, at the very least we should have all of the Hall of Fame Players by position: [HOF Players by Position](https://www.profootballhof.com/heroes-of-the-game/positions/)
+    * If necessary season and career stats can be retrieved from: [pro-football-reference](https://www.pro-football-reference.com/)
+
