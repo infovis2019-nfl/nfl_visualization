@@ -35,14 +35,17 @@ d3.csv('http://localhost:3000/career_passing_stats').then(function(data) {
 
 	svg.append('g').attr('class', 'axis').attr('transform', 'translate(' + margin.left + ',0)').call(yAxis);
 
+	const toolTip = d3.select('body').append('div').attr('class', 'toolTip');
+
 	svg
 		.selectAll('rect')
 		.data(data)
 		.enter()
 		.append('rect')
 		.attr('class', 'bar')
-		.on('mouseover', function() {
+		.on('mouseover', function(data) {
 			d3.select(this).attr('fill', 'red');
+			toolTip.style('visibility', 'visible');
 		})
 		.on('mouseout', function() {
 			d3.select(this).transition('colorfade').duration(250).attr('fill', function(d) {
@@ -56,6 +59,11 @@ d3.csv('http://localhost:3000/career_passing_stats').then(function(data) {
 					')'
 				);
 			});
+			toolTip.style('visibility', 'hidden');
+		})
+		.on('mousemove', function(data) {
+			toolTip.style('top', event.pageY - 10 + 'px').style('left', event.pageX + 10 + 'px');
+			toolTip.text(`${data.Player} : ${data.TD} TDs`);
 		})
 		.attr('fill', function(d) {
 			return (
@@ -79,9 +87,9 @@ d3.csv('http://localhost:3000/career_passing_stats').then(function(data) {
 			return height - y(d.TD);
 		});
 
-	svg.selectAll('rect').append('title').text(function(d) {
-		return d.Player + ': ' + d.TD;
-	});
+	// svg.selectAll('rect').append('title').text(function(d) {
+	// 	return d.Player + ': ' + d.TD;
+	// });
 
 	// Value at the top of the bar
 	svg
