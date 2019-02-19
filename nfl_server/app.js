@@ -9,7 +9,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/career_passing_stats', function(req, res) {
-	res.sendFile(__dirname + '/data/career_passing_stats.csv', function(err) {
+	res.sendFile(__dirname + '/data/career_passing_stats_10.csv', function(err) {
 		if (!err) console.log('File has been sent');
 	});
 });
