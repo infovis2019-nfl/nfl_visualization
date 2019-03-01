@@ -14,6 +14,6 @@ app.get('/career_passing_stats', function(req, res) {
 	});
 });
 
-app.listen(process.env.PORT, function() {
+app.listen(process.env.PORT || 3000, function() {
 	console.log('NFL Server listening on PORT:', process.env.PORT);
 });
