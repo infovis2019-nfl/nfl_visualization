@@ -6,7 +6,7 @@ from utils import data_helper as dataHelper
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='Scale columns of a CSV file')
+    parser = argparse.ArgumentParser(description='Scale columns of a CSV file between 0 and 1')
     parser.add_argument('input_file_name', type=str, help="Name of the input CSV file [.csv included]")
     parser.add_argument('output_file_name', type=str, help='Name of the output CSV file [.csv included]')
     args = parser.parse_args()
