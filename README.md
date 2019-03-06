@@ -20,9 +20,6 @@ positional arguments:
   output_file_name  Name of the output CSV file [.csv included]
   column_number     CSV Column Number to Match
   column_value      The Value to Match
-
-optional arguments:
-  -h, --help        show this help message and exit
   ```
 
 Example:  `python3 matcher.py Career_Stats_Passing.csv Tom_Brady.csv 1 "Brady, Tom"`
@@ -37,15 +34,22 @@ Cleaning Columns of a CSV file
 positional arguments:
   input_file_name  Name of the input CSV file [.csv included]
   column_number    CSV Column Number to Clean
-
-optional arguments:
-  -h, --help       show this help message and exit
 ```
 Example: `python3 cleaner.py career_passing_stats.csv 1`
 
-## TODO:
+## normalize_passing.py - normalize passing stats between 0 and 1
+Notes:
+* Columns to be normalized have been hard-coded
+* Normalized columns are appended to the end of each row
 
-1. Career stats need to be combined, current career stats are broken up by year
-2. Some players are missing, at the very least we should have all of the Hall of Fame Players by position: [HOF Players by Position](https://www.profootballhof.com/heroes-of-the-game/positions/)
-    * If necessary season and career stats can be retrieved from: [pro-football-reference](https://www.pro-football-reference.com/)
+```
+usage: normalize_passing.py [-h] input_file_name output_file_name
 
+Scale columns of a CSV file between 0 and 1
+
+positional arguments:
+  input_file_name   Name of the input CSV file [.csv included]
+  output_file_name  Name of the output CSV file [.csv included]
+```
+
+Example: `python3 normalize_passing.py career_passing_stats.csv career_passing_stats_normalized.csv`
