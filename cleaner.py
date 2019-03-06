@@ -18,7 +18,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     inputFilePath = os.getcwd() + '/pro_football_dataset/players/' + args.input_file_name
-    outputFilePath = os.getcwd() + '/pro_football_dataset/players/' + args.input_file_name
+    outputFilePath = os.getcwd() + '/pro_football_dataset/players/cleaned/' + args.input_file_name
 
     csvReader = csvHelper.readCSV(inputFilePath)
     csvWriter = csvHelper.writeCSV(outputFilePath)
