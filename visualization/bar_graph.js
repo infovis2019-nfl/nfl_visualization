@@ -9,7 +9,7 @@ const margin = {
 const width = w - margin.left - margin.right;
 const height = h - margin.top - margin.bottom;
 
-d3.csv('http://localhost:3000/career_passing_stats').then(function(data) {
+d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
 	let x = d3
 		.scaleBand()
 		.domain(

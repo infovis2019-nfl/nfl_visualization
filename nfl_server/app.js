@@ -8,9 +8,10 @@ app.get('/', function(req, res) {
 	res.send('Hit the home page of the server');
 });
 
-app.get('/career_passing_stats', function(req, res) {
-	res.sendFile(__dirname + '/data/career_passing_stats_10.csv', function(err) {
-		if (!err) console.log('File has been sent');
+app.get('/data/:fileName', function(req, res) {
+	const fileName = req.params.fileName;
+	res.sendFile(`${__dirname}/data/${fileName}.csv`, function(err) {
+		if (!err) console.log(`File: ${fileName}.csv has been sent!`);
 	});
 });
 
