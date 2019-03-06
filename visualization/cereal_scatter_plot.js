@@ -11,8 +11,7 @@ const margin = { top: 20, right: 20, bottom: 30, left: 40 },
 
 // setup x
 const xValue = function(d) {
-		// TODO: This will need to be the sum of the normalized statistics that are chosen by the user
-		return d.G;
+		return d.Calories;
 	}, // data -> value
 	xScale = d3.scaleLinear().range([ 0, width ]), // value -> display
 	xMap = function(d) {
@@ -22,7 +21,7 @@ const xValue = function(d) {
 
 // setup y
 const yValue = function(d) {
-		return d.TD;
+		return d['Protein (g)'];
 	}, // data -> value
 	yScale = d3.scaleLinear().range([ height, 0 ]), // value -> display
 	yMap = function(d) {
@@ -49,19 +48,16 @@ const svg = d3
 const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
 
 // load data
-d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
+d3.csv('http://localhost:3000/data/cereal').then(function(data) {
 	// change string (from CSV) into number format
 	data.forEach(function(d) {
-		// d.Calories = +d.Calories;
-		d.G = +d.G;
-		d.TD = +d.TD;
-		// d['Protein (g)'] = +d['Protein (g)'];
+		d.Calories = +d.Calories;
+		d['Protein (g)'] = +d['Protein (g)'];
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
-	// TODO: determine how much additional padding should be added to each - this will be dependent on the units that are used
-	xScale.domain([ d3.min(data, xValue) - 100, d3.max(data, xValue) + 100 ]);
-	yScale.domain([ d3.min(data, yValue) - 100, d3.max(data, yValue) + 100 ]);
+	xScale.domain([ d3.min(data, xValue) - 1, d3.max(data, xValue) + 1 ]);
+	yScale.domain([ d3.min(data, yValue) - 1, d3.max(data, yValue) + 1 ]);
 
 	// x-axis
 	svg
@@ -74,7 +70,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.attr('x', width)
 		.attr('y', -6)
 		.style('text-anchor', 'end')
-		.text('Games Played');
+		.text('Calories');
 
 	// y-axis
 	svg
@@ -87,7 +83,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.attr('y', 6)
 		.attr('dy', '.71em')
 		.style('text-anchor', 'end')
-		.text('Yards');
+		.text('Protein (g)');
 
 	// draw dots
 	svg
@@ -96,7 +92,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.enter()
 		.append('circle')
 		.attr('class', 'dot')
-		.attr('r', 5)
+		.attr('r', 3.5)
 		.attr('cx', xMap)
 		.attr('cy', yMap)
 		.style('fill', function(d) {
@@ -105,7 +101,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.on('mouseover', function(d) {
 			tooltip.transition().duration(200).style('opacity', 0.9);
 			tooltip
-				.html(d['Player'] + '<br/> (' + xValue(d) + ', ' + yValue(d) + ')')
+				.html(d['Cereal Name'] + '<br/> (' + xValue(d) + ', ' + yValue(d) + ')')
 				.style('left', d3.event.pageX + 5 + 'px')
 				.style('top', d3.event.pageY - 28 + 'px');
 		})
@@ -113,28 +109,28 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 			tooltip.transition().duration(500).style('opacity', 0);
 		});
 
-	// // draw legend
-	// const legend = svg
-	// 	.selectAll('.legend')
-	// 	.data(color.domain())
-	// 	.enter()
-	// 	.append('g')
-	// 	.attr('class', 'legend')
-	// 	.attr('transform', function(d, i) {
-	// 		return 'translate(0,' + i * 20 + ')';
-	// 	});
+	// draw legend
+	const legend = svg
+		.selectAll('.legend')
+		.data(color.domain())
+		.enter()
+		.append('g')
+		.attr('class', 'legend')
+		.attr('transform', function(d, i) {
+			return 'translate(0,' + i * 20 + ')';
+		});
 
-	// // draw legend colored rectangles
-	// legend.append('rect').attr('x', width - 18).attr('width', 18).attr('height', 18).style('fill', color);
+	// draw legend colored rectangles
+	legend.append('rect').attr('x', width - 18).attr('width', 18).attr('height', 18).style('fill', color);
 
-	// // draw legend text
-	// legend
-	// 	.append('text')
-	// 	.attr('x', width - 24)
-	// 	.attr('y', 9)
-	// 	.attr('dy', '.35em')
-	// 	.style('text-anchor', 'end')
-	// 	.text(function(d) {
-	// 		return d;
-	// 	});
+	// draw legend text
+	legend
+		.append('text')
+		.attr('x', width - 24)
+		.attr('y', 9)
+		.attr('dy', '.35em')
+		.style('text-anchor', 'end')
+		.text(function(d) {
+			return d;
+		});
 });
