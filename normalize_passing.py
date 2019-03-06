@@ -21,19 +21,25 @@ if __name__ == "__main__":
     yards = []
     tds = []
     qbr = []
+    compPercentages = []
+    wins = []
     count = 0
     for line in csvReader:
         results.append(line)
         if count > 1:
+            compPercentages.append(float(line[11]))
             yards.append(float(line[12]))
             tds.append(float(line[13]))
             qbr.append(float(line[18]))
+            wins.append(float(line[25]))
         count += 1
 
 
     normalizedYards = dataHelper.normalize(yards)
     normalizedTds = dataHelper.normalize(tds)
     normalizedQBR = dataHelper.normalize(qbr)
+    normalizedCompPercentage = dataHelper.normalize(compPercentages)
+    normalizedWins = dataHelper.normalize(wins)
 
     count = 0
     playerCount = 0
@@ -41,15 +47,22 @@ if __name__ == "__main__":
         if count == 0:
             row.append('Passing')
             row.append('Passing')
+            row.append('Passing')
+            row.append('Passing')
+            row.append('Passing')
             count += 1
         elif count == 1:
+            row.append(results[1][11] + '-Normalized')
             row.append(results[1][12] + '-Normalized')
             row.append(results[1][13] + '-Normalized')
             row.append(results[1][18] + '-Normalized')
+            row.append(results[1][25] + '-Normalized')
             count += 1
         else:
             row.append(normalizedYards[playerCount])
             row.append(normalizedTds[playerCount])
             row.append(normalizedQBR[playerCount])
+            row.append(normalizedCompPercentage[playerCount])
+            row.append(normalizedWins[playerCount])
             playerCount += 1
         csvWriter.writerow(row)

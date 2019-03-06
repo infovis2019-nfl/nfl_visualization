@@ -11,30 +11,30 @@ const margin = { top: 20, right: 20, bottom: 30, left: 40 },
 
 // setup x
 const xValue = function(d) {
-		// TODO: This will need to be the sum of the normalized statistics that are chosen by the user
-		return d.G;
-	}, // data -> value
-	xScale = d3.scaleLinear().range([ 0, width ]), // value -> display
-	xMap = function(d) {
-		return xScale(xValue(d));
-	}, // data -> display
-	xAxis = d3.axisBottom().scale(xScale);
+	// TODO: This will need to be the sum of the normalized statistics that are chosen by the user
+	return d.G;
+};
+const xScale = d3.scaleLinear().range([ 0, width ]); // value -> display
+const xMap = function(d) {
+	return xScale(xValue(d));
+};
+const xAxis = d3.axisBottom().scale(xScale);
 
 // setup y
 const yValue = function(d) {
-		return d.TD;
-	}, // data -> value
-	yScale = d3.scaleLinear().range([ height, 0 ]), // value -> display
-	yMap = function(d) {
-		return yScale(yValue(d));
-	}, // data -> display
-	yAxis = d3.axisLeft().scale(yScale);
+	return d.TD;
+};
+const yScale = d3.scaleLinear().range([ height, 0 ]); // value -> display
+const yMap = function(d) {
+	return yScale(yValue(d));
+};
+const yAxis = d3.axisLeft().scale(yScale);
 
 // setup fill color
 const cValue = function(d) {
-		return d.Manufacturer;
-	},
-	color = d3.scaleOrdinal(d3.schemeCategory10);
+	return d.Manufacturer;
+};
+const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 // add the graph canvas to the body of the webpage
 const svg = d3
