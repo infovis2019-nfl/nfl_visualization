@@ -26,6 +26,9 @@ Example:  `python3 matcher.py Career_Stats_Passing.csv Tom_Brady.csv 1 "Brady, T
 
 ## cleaner.py - Clean a specific column and output all lines to a file
 
+#### Instructions
+* Create the `cleaned` folder: `/pro_football_dataset/players/cleaned/` before running
+
 ```
 usage: cleaner.py [-h] input_file_name column_number
 

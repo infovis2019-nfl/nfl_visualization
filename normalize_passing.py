@@ -11,8 +11,8 @@ if __name__ == "__main__":
     parser.add_argument('output_file_name', type=str, help='Name of the output CSV file [.csv included]')
     args = parser.parse_args()
 
-    inputFilePath = os.getcwd() + '/pro_football_dataset/players/cleaned/' + args.input_file_name
-    outputFilePath = os.getcwd() + '/pro_football_dataset/players/cleaned/output_scaled/' + args.output_file_name
+    inputFilePath = os.getcwd() + '/pro_football_dataset/players/' + args.input_file_name
+    outputFilePath = os.getcwd() + '/pro_football_dataset/players/output_scaled/' + args.output_file_name
 
     csvReader = csvHelper.readCSV(inputFilePath)
     csvWriter = csvHelper.writeCSV(outputFilePath)

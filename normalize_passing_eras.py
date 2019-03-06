@@ -16,8 +16,8 @@ def findMax(seasonsData, stat):
 
 if __name__ == "__main__":
     seasonsFilePath = os.getcwd() + '/pro_football_dataset/seasons/passing_per_game.csv'
-    playersFilePath = os.getcwd() + '/pro_football_dataset/players/cleaned/career_passing_stats.csv'
-    outputFilePath = os.getcwd() + '/pro_football_dataset/players/cleaned/adjusted/career_passing_stats.csv'
+    playersFilePath = os.getcwd() + '/pro_football_dataset/players/career_passing_stats.csv'
+    outputFilePath = os.getcwd() + '/pro_football_dataset/players/adjusted/career_passing_stats.csv'
 
 
     csvReaderSeasons = csvHelper.readCSV(seasonsFilePath)
