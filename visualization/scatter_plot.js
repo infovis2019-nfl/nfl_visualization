@@ -32,7 +32,7 @@ const yAxis = d3.axisLeft().scale(yScale);
 
 // setup fill color
 const cValue = function(d) {
-	return d.Manufacturer;
+	return d.Player;
 };
 const color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -40,6 +40,7 @@ const color = d3.scaleOrdinal(d3.schemeCategory10);
 const svg = d3
 	.select('body')
 	.append('svg')
+	.attr('class', 'container')
 	.attr('width', width + margin.left + margin.right)
 	.attr('height', height + margin.top + margin.bottom)
 	.append('g')
@@ -62,7 +63,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(fun
 
 	// don't want dots overlapping axis, so add in buffer to data domain
 	// TODO: determine how much additional padding should be added to each - this will be dependent on the units that are used
-	xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 10 ]);
+	xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 20 ]);
 	yScale.domain([ d3.min(data, yValue) - 1, d3.max(data, yValue) + 1 ]);
 
 	// TODO: Figure out why the Axis labels aren't showing
@@ -132,28 +133,28 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(fun
 			tooltip.transition().duration(500).style('opacity', 0);
 		});
 
-	// // draw legend
-	// const legend = svg
-	// 	.selectAll('.legend')
-	// 	.data(color.domain())
-	// 	.enter()
-	// 	.append('g')
-	// 	.attr('class', 'legend')
-	// 	.attr('transform', function(d, i) {
-	// 		return 'translate(0,' + i * 20 + ')';
-	// 	});
+	// draw legend
+	const legend = svg
+		.selectAll('.legend')
+		.data(color.domain())
+		.enter()
+		.append('g')
+		.attr('class', 'legend')
+		.attr('transform', function(d, i) {
+			return 'translate(0,' + i * 20 + ')';
+		});
 
-	// // draw legend colored rectangles
-	// legend.append('rect').attr('x', width - 18).attr('width', 18).attr('height', 18).style('fill', color);
+	// draw legend colored rectangles
+	legend.append('rect').attr('x', width - 18).attr('width', 18).attr('height', 18).style('fill', color);
 
-	// // draw legend text
-	// legend
-	// 	.append('text')
-	// 	.attr('x', width - 24)
-	// 	.attr('y', 9)
-	// 	.attr('dy', '.35em')
-	// 	.style('text-anchor', 'end')
-	// 	.text(function(d) {
-	// 		return d;
-	// 	});
+	// draw legend text
+	legend
+		.append('text')
+		.attr('x', width - 24)
+		.attr('y', 9)
+		.attr('dy', '.35em')
+		.style('text-anchor', 'end')
+		.text(function(d) {
+			return d;
+		});
 });
