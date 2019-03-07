@@ -22,7 +22,7 @@ const xAxis = d3.axisBottom().scale(xScale);
 // setup y
 const yValue = function(d) {
 	// TODO: This will need to be the sum of the normalized statistics that are chosen by the user
-	return d.cmp + d.yds + d.tds + d.rate + d.wins;
+	return d.cmpNormalized + d.ydsNormalized + d.tdsNormalized + d.rateNormalized + d.winsNormalized;
 };
 const yScale = d3.scaleLinear().range([ height, 0 ]); // value -> display
 const yMap = function(d) {
@@ -52,22 +52,20 @@ const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('
 d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
 	// change string (from CSV) into number format
 	data.forEach(function(d) {
-		// d.Calories = +d.Calories;
 		d.G = +d.G;
-		// d.TD = +d.TD;
-		d.cmp = +d['Cmp%-Normalized'];
-		d.yds = +d['Yds-Normalized'];
-		d.tds = +d['TD-Normalized'];
-		d.rate = +d['Rate-Normalized'];
-		d.wins = +d['W-Normalized'];
-		// d['Protein (g)'] = +d['Protein (g)'];
+		d.cmpNormalized = +d['Cmp%-Normalized'];
+		d.ydsNormalized = +d['Yds-Normalized'];
+		d.tdsNormalized = +d['TD-Normalized'];
+		d.rateNormalized = +d['Rate-Normalized'];
+		d.winsNormalized = +d['W-Normalized'];
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
 	// TODO: determine how much additional padding should be added to each - this will be dependent on the units that are used
-	xScale.domain([ d3.min(data, xValue) - 1, d3.max(data, xValue) + 1 ]);
+	xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 10 ]);
 	yScale.domain([ d3.min(data, yValue) - 1, d3.max(data, yValue) + 1 ]);
 
+	// TODO: Figure out why the Axis labels aren't showing
 	// x-axis
 	svg
 		.append('g')
@@ -110,8 +108,24 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(fun
 		.on('mouseover', function(d) {
 			tooltip.transition().duration(200).style('opacity', 0.9);
 			tooltip
-				.html(d['Player'] + '<br/> (' + xValue(d) + ', ' + yValue(d) + ')')
-				.style('left', d3.event.pageX + 5 + 'px')
+				.html(
+					d['Player'] +
+						'<br/> (' +
+						xValue(d) +
+						', ' +
+						yValue(d) +
+						') <br/> Touchdowns: ' +
+						d.TD +
+						' <br/> Yards: ' +
+						d.Yds +
+						' <br/> Wins: ' +
+						d.W +
+						' <br/> Completion Percentage: ' +
+						d['Cmp%'] +
+						'<br/> QBR: ' +
+						d.Rate
+				)
+				.style('left', d3.event.pageX + 20 + 'px')
 				.style('top', d3.event.pageY - 28 + 'px');
 		})
 		.on('mouseout', function(d) {
