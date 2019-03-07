@@ -11,7 +11,6 @@ const margin = { top: 20, right: 20, bottom: 30, left: 40 },
 
 // setup x
 const xValue = function(d) {
-	// TODO: This will need to be the sum of the normalized statistics that are chosen by the user
 	return d.G;
 };
 const xScale = d3.scaleLinear().range([ 0, width ]); // value -> display
@@ -22,7 +21,8 @@ const xAxis = d3.axisBottom().scale(xScale);
 
 // setup y
 const yValue = function(d) {
-	return d.TD;
+	// TODO: This will need to be the sum of the normalized statistics that are chosen by the user
+	return d.cmp + d.yds + d.tds + d.rate + d.wins;
 };
 const yScale = d3.scaleLinear().range([ height, 0 ]); // value -> display
 const yMap = function(d) {
@@ -49,19 +49,24 @@ const svg = d3
 const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
 
 // load data
-d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
+d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
 	// change string (from CSV) into number format
 	data.forEach(function(d) {
 		// d.Calories = +d.Calories;
 		d.G = +d.G;
-		d.TD = +d.TD;
+		// d.TD = +d.TD;
+		d.cmp = +d['Cmp%-Normalized'];
+		d.yds = +d['Yds-Normalized'];
+		d.tds = +d['TD-Normalized'];
+		d.rate = +d['Rate-Normalized'];
+		d.wins = +d['W-Normalized'];
 		// d['Protein (g)'] = +d['Protein (g)'];
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
 	// TODO: determine how much additional padding should be added to each - this will be dependent on the units that are used
-	xScale.domain([ d3.min(data, xValue) - 100, d3.max(data, xValue) + 100 ]);
-	yScale.domain([ d3.min(data, yValue) - 100, d3.max(data, yValue) + 100 ]);
+	xScale.domain([ d3.min(data, xValue) - 1, d3.max(data, xValue) + 1 ]);
+	yScale.domain([ d3.min(data, yValue) - 1, d3.max(data, yValue) + 1 ]);
 
 	// x-axis
 	svg
@@ -74,7 +79,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.attr('x', width)
 		.attr('y', -6)
 		.style('text-anchor', 'end')
-		.text('Games Played');
+		.text('Total Normalized Score');
 
 	// y-axis
 	svg
