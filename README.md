@@ -56,3 +56,10 @@ positional arguments:
 ```
 
 Example: `python3 normalize_passing.py career_passing_stats.csv career_passing_stats_normalized.csv`
+
+## TODO:
+
+### Scatter Plot
+1. Create drop-down selectors so users can pick which stats should be included in the combined score
+2. Allow for users to control the weights of each of the selected statistics
+3. Incorporate pie charts into the scatter plot on hover/click events
