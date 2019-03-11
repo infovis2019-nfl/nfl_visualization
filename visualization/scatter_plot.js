@@ -49,8 +49,15 @@ const svg = d3
 // add the tooltip area to the webpage
 const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
 
+const updateScatterPlot = (checkedAttributes) => {
+	// TODO: Update the scatter plot according to the values given in checkedAttributes
+	console.log('The value of checkedAttributes is:', checkedAttributes);
+};
+
 // load data
 d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
+	initializeCheckboxes(data);
+
 	// change string (from CSV) into number format
 	data.forEach(function(d) {
 		d.G = +d.G;
