@@ -20,11 +20,10 @@ const xMap = function(d) {
 const xAxis = d3.axisBottom().scale(xScale);
 
 // setup y
-const yValue = function(d) {
-	// TODO: This will need to be the sum of the normalized statistics that are chosen by the user
-	return d.cmpNormalized + d.ydsNormalized + d.tdsNormalized + d.rateNormalized + d.winsNormalized;
+let yValue = function(d) {
+	return 0;
 };
-const yScale = d3.scaleLinear().range([ height, 0 ]); // value -> display
+let yScale = d3.scaleLinear().range([ height, 0 ]); // value -> display
 const yMap = function(d) {
 	return yScale(yValue(d));
 };
@@ -49,8 +48,26 @@ const svg = d3
 // add the tooltip area to the webpage
 const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
 
-// load data
+const updateScatterPlot = (checkedAttributes) => {
+	yValue = function(d) {
+		// Calculate the combined score of each of the selected statistics
+		let combinedScore = 0;
+		for (let i = 0; i < checkedAttributes.length; i++) {
+			combinedScore += parseFloat(d[checkedAttributes[i]]);
+		}
+		return combinedScore;
+	};
+	yScale.domain([ 0, d3.max(qbData, yValue) + 0.5 ]);
+
+	svg.select('.y-axis').call(yAxis);
+	svg.transition().selectAll('.dot').duration(1500).attr('cy', yMap);
+};
+
+let qbData;
 d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
+	initializeCheckboxes(data);
+	qbData = data;
+
 	// change string (from CSV) into number format
 	data.forEach(function(d) {
 		d.G = +d.G;
@@ -62,15 +79,16 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(fun
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
-	// TODO: determine how much additional padding should be added to each - this will be dependent on the units that are used
 	xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 20 ]);
-	yScale.domain([ d3.min(data, yValue) - 1, d3.max(data, yValue) + 1 ]);
+	// yScale.domain([ d3.min(data, yValue) - 1, d3.max(data, yValue) + 1 ]);
+	yScale.domain([ 0, d3.max(data, yValue) + 1 ]);
 
 	// TODO: Figure out why the Axis labels aren't showing
 	// x-axis
 	svg
 		.append('g')
-		.attr('class', 'x axis')
+		.attr('class', 'axis')
+		.attr('class', 'x-axis')
 		.attr('transform', 'translate(0,' + height + ')')
 		.call(xAxis)
 		.append('text')
@@ -83,7 +101,8 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(fun
 	// y-axis
 	svg
 		.append('g')
-		.attr('class', 'y axis')
+		.attr('class', 'axis')
+		.attr('class', 'y-axis')
 		.call(yAxis)
 		.append('text')
 		.attr('class', 'label')

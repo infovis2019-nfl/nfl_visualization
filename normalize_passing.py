@@ -35,10 +35,10 @@ if __name__ == "__main__":
         count += 1
 
 
+    normalizedCompPercentage = dataHelper.normalize(compPercentages)
     normalizedYards = dataHelper.normalize(yards)
     normalizedTds = dataHelper.normalize(tds)
     normalizedQBR = dataHelper.normalize(qbr)
-    normalizedCompPercentage = dataHelper.normalize(compPercentages)
     normalizedWins = dataHelper.normalize(wins)
 
     count = 0
@@ -59,10 +59,10 @@ if __name__ == "__main__":
             row.append(results[1][25] + '-Normalized')
             count += 1
         else:
+            row.append(normalizedCompPercentage[playerCount])
             row.append(normalizedYards[playerCount])
             row.append(normalizedTds[playerCount])
             row.append(normalizedQBR[playerCount])
-            row.append(normalizedCompPercentage[playerCount])
             row.append(normalizedWins[playerCount])
             playerCount += 1
         csvWriter.writerow(row)
