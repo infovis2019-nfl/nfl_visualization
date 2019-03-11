@@ -49,11 +49,12 @@ const svg = d3
 const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
 
 const updateScatterPlot = (checkedAttributes) => {
+	normalizeSelectedAttributes(qbData, checkedAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
 		for (let i = 0; i < checkedAttributes.length; i++) {
-			combinedScore += parseFloat(d[checkedAttributes[i]]);
+			combinedScore += parseFloat(d[checkedAttributes[i] + '-Normalized']);
 		}
 		return combinedScore;
 	};
@@ -64,23 +65,17 @@ const updateScatterPlot = (checkedAttributes) => {
 };
 
 let qbData;
-d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
+d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
 	initializeCheckboxes(data);
 	qbData = data;
 
 	// change string (from CSV) into number format
 	data.forEach(function(d) {
 		d.G = +d.G;
-		d.cmpNormalized = +d['Cmp%-Normalized'];
-		d.ydsNormalized = +d['Yds-Normalized'];
-		d.tdsNormalized = +d['TD-Normalized'];
-		d.rateNormalized = +d['Rate-Normalized'];
-		d.winsNormalized = +d['W-Normalized'];
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
 	xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 20 ]);
-	// yScale.domain([ d3.min(data, yValue) - 1, d3.max(data, yValue) + 1 ]);
 	yScale.domain([ 0, d3.max(data, yValue) + 1 ]);
 
 	// TODO: Figure out why the Axis labels aren't showing
