@@ -1,4 +1,4 @@
-// TODO: Include some additional values that can be used here
+// TODO: Uncomment a value to create a checkbox for it
 const allowedAttributes = [
 	// 'Rk',
 	// 'Player',
@@ -11,30 +11,25 @@ const allowedAttributes = [
 	// 'GS',
 	// 'Cmp',
 	// 'Att',
-	// 'Cmp%',
-	// 'Yds',
-	// 'TD',
+	'Cmp%',
+	'Yds',
+	'TD',
 	// 'Int',
 	// 'Pick6',
 	// 'TD%',
 	// 'Int%',
-	// 'Rate',
+	'Rate',
 	// 'Sk',
 	// 'YdsASDF',
 	// 'Y/A',
 	// 'AY/A',
 	// 'ANY/A',
 	// 'Y/G',
-	// 'W',
+	'W'
 	// 'L',
 	// 'T',
 	// '4QC',
-	// 'GWD',
-	'Cmp%-Normalized',
-	'Yds-Normalized',
-	'TD-Normalized',
-	'Rate-Normalized',
-	'W-Normalized'
+	// 'GWD'
 ];
 
 const change = (checkbox) => {
