@@ -60,6 +60,7 @@ Example: `python3 normalize_passing.py career_passing_stats.csv career_passing_s
 ## TODO:
 
 ### Scatter Plot
-1. Create drop-down selectors so users can pick which stats should be included in the combined score
-2. Allow for users to control the weights of each of the selected statistics
-3. Incorporate pie charts into the scatter plot on hover/click events
+1. Allow for users to control the weights of each of the selected statistics
+2. Incorporate pie charts into the scatter plot on hover/click events
+3. Allow for users to control the # of players shown / select which players to show
+
