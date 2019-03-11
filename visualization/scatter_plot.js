@@ -51,10 +51,12 @@ const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('
 const updateScatterPlot = (checkedAttributes) => {
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
+		console.log(d);
 		let combinedScore = 0;
 		for (let i = 0; i < checkedAttributes.length; i++) {
 			combinedScore += parseFloat(d[checkedAttributes[i]]);
 		}
+		console.log(`Combined Score for ${d.Player}: ${combinedScore}`);
 		return combinedScore;
 	};
 	yScale.domain([ 0, d3.max(qbData, yValue) + 0.5 ]);
@@ -87,6 +89,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(fun
 	// x-axis
 	svg
 		.append('g')
+		.attr('class', 'axis')
 		.attr('class', 'x-axis')
 		.attr('transform', 'translate(0,' + height + ')')
 		.call(xAxis)
@@ -100,6 +103,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(fun
 	// y-axis
 	svg
 		.append('g')
+		.attr('class', 'axis')
 		.attr('class', 'y-axis')
 		.call(yAxis)
 		.append('text')
