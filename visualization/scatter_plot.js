@@ -51,12 +51,10 @@ const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('
 const updateScatterPlot = (checkedAttributes) => {
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
-		console.log(d);
 		let combinedScore = 0;
 		for (let i = 0; i < checkedAttributes.length; i++) {
 			combinedScore += parseFloat(d[checkedAttributes[i]]);
 		}
-		console.log(`Combined Score for ${d.Player}: ${combinedScore}`);
 		return combinedScore;
 	};
 	yScale.domain([ 0, d3.max(qbData, yValue) + 0.5 ]);
