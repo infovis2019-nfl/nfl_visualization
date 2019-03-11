@@ -21,8 +21,7 @@ const xAxis = d3.axisBottom().scale(xScale);
 
 // setup y
 let yValue = function(d) {
-	// TODO: This will need to be the sum of the normalized statistics that are chosen by the user
-	return d.cmpNormalized + d.ydsNormalized + d.tdsNormalized + d.rateNormalized + d.winsNormalized;
+	return 0;
 };
 let yScale = d3.scaleLinear().range([ height, 0 ]); // value -> display
 const yMap = function(d) {
@@ -58,7 +57,7 @@ const updateScatterPlot = (checkedAttributes) => {
 		}
 		return combinedScore;
 	};
-	yScale.domain([ 0, d3.max(qbData, yValue) + 1 ]);
+	yScale.domain([ 0, d3.max(qbData, yValue) + 0.5 ]);
 
 	svg.select('.y-axis').call(yAxis);
 	svg.transition().selectAll('.dot').duration(1500).attr('cy', yMap);
