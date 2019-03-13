@@ -37,7 +37,7 @@ const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 // add the graph canvas to the body of the webpage
 const svg = d3
-	.select('body')
+	.select('#visualization')
 	.append('svg')
 	.attr('class', 'container')
 	.attr('width', width + margin.left + margin.right)
@@ -46,8 +46,9 @@ const svg = d3
 	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 // add the tooltip area to the webpage
-const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
+const tooltip = d3.select('#visualization').append('div').attr('class', 'tooltip').style('opacity', 0);
 
+// TODO: Rename to updateScatterPlotYValues
 const updateScatterPlot = (checkedAttributes) => {
 	normalizeSelectedAttributes(qbData, checkedAttributes);
 	yValue = function(d) {
@@ -66,7 +67,8 @@ const updateScatterPlot = (checkedAttributes) => {
 
 let qbData;
 d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
-	initializeCheckboxes(data);
+	initializeAttributeCheckboxes(data);
+	initializePlayerCheckboxes(data);
 	qbData = data;
 
 	// change string (from CSV) into number format
