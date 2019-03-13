@@ -121,27 +121,15 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 			return color(cValue(d));
 		})
 		.on('mouseover', function(d) {
+			const checkedAttributes = getCheckedAttributes();
+
 			tooltip.transition().duration(200).style('opacity', 0.9);
 			tooltip
-				.html(
-					d['Player'] +
-						'<br/> (' +
-						xValue(d) +
-						', ' +
-						yValue(d) +
-						') <br/> Touchdowns: ' +
-						d.TD +
-						' <br/> Yards: ' +
-						d.Yds +
-						' <br/> Wins: ' +
-						d.W +
-						' <br/> Completion Percentage: ' +
-						d['Cmp%'] +
-						'<br/> QBR: ' +
-						d.Rate
-				)
+				.html(generateTooltipHtml(d, checkedAttributes))
 				.style('left', d3.event.pageX + 20 + 'px')
 				.style('top', d3.event.pageY - 28 + 'px');
+
+			generatePieChart(checkedAttributes, d);
 		})
 		.on('mouseout', function(d) {
 			tooltip.transition().duration(500).style('opacity', 0);
