@@ -52,7 +52,7 @@ const generatePieChart = (checkedAttributes, d) => {
 		.text(function(d) {
 			let attribute = d.data.key;
 			attribute = attribute.substring(0, attribute.indexOf('-Normalized'));
-			return attribute + ':' + d.data.value.toFixed(2);
+			return attribute + ': ' + d.data.value.toFixed(2);
 		})
 		.attr('transform', function(d) {
 			return 'translate(' + arcGenerator.centroid(d) + ')';
