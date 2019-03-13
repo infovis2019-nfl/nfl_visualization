@@ -50,7 +50,9 @@ const generatePieChart = (checkedAttributes, d) => {
 		.enter()
 		.append('text')
 		.text(function(d) {
-			return d.data.key + ':' + d.data.value;
+			let attribute = d.data.key;
+			attribute = attribute.substring(0, attribute.indexOf('-Normalized'));
+			return attribute + ':' + d.data.value.toFixed(2);
 		})
 		.attr('transform', function(d) {
 			return 'translate(' + arcGenerator.centroid(d) + ')';

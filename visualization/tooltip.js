@@ -3,6 +3,7 @@ const generateTooltipHtml = (data, checkedAttributes) => {
 	checkedAttributes.forEach((attribute) => {
 		toolTipHtml += '<br/> ' + attribute + ': ' + data[attribute];
 	});
+	toolTipHtml += '<br/> <h5> Combined Score Breakdown: </h5>';
 	toolTipHtml += '<br/> <div id="tipDiv"></div><br/>';
 	return toolTipHtml;
 };
