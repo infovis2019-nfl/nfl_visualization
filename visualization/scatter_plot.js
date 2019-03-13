@@ -121,27 +121,11 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 			return color(cValue(d));
 		})
 		.on('mouseover', function(d) {
+			const checkedAttributes = getCheckedAttributes();
+
 			tooltip.transition().duration(200).style('opacity', 0.9);
-			// TODO: The tooltip should first check which checkboxes have been selected
 			tooltip
-				.html(
-					d['Player'] +
-						'<br/> (' +
-						xValue(d) +
-						', ' +
-						yValue(d) +
-						') <br/> Touchdowns: ' +
-						d.TD +
-						' <br/> Yards: ' +
-						d.Yds +
-						' <br/> Wins: ' +
-						d.W +
-						' <br/> Completion Percentage: ' +
-						d['Cmp%'] +
-						'<br/> QBR: ' +
-						d.Rate +
-						'<div id="tipDiv"></div><br/>'
-				)
+				.html(generateToolTipHtml(d, checkedAttributes))
 				.style('left', d3.event.pageX + 20 + 'px')
 				.style('top', d3.event.pageY - 28 + 'px');
 
@@ -150,8 +134,6 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 			const margin = 10;
 
 			const radius = Math.min(width, height) / 4 - margin;
-
-			const checkedAttributes = getCheckedAttributes();
 
 			const pieChartData = {};
 			checkedAttributes.forEach((attr) => {
