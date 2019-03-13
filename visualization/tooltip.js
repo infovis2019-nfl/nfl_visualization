@@ -1,4 +1,4 @@
-const generateToolTipHtml = (data, checkedAttributes) => {
+const generateTooltipHtml = (data, checkedAttributes) => {
 	let toolTipHtml = data.Player + '<br/> (' + xValue(data) + ', ' + yValue(data) + ')';
 	checkedAttributes.forEach((attribute) => {
 		toolTipHtml += '<br/> ' + attribute + ': ' + data[attribute];
