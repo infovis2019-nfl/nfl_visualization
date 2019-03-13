@@ -32,7 +32,7 @@ const allowedAttributes = [
 	// 'GWD'
 ];
 
-const change = (checkbox) => {
+const getCheckedAttributes = () => {
 	const checkedAttributes = [];
 	d3.selectAll('.attrCheckbox').each(function(d) {
 		const cb = d3.select(this);
@@ -42,6 +42,11 @@ const change = (checkbox) => {
 			checkedAttributes.push(id);
 		}
 	});
+	return checkedAttributes;
+};
+
+const change = (checkbox) => {
+	const checkedAttributes = getCheckedAttributes();
 	updateScatterPlot(checkedAttributes);
 };
 
@@ -59,7 +64,6 @@ const initializeCheckboxes = (data) => {
 			return d;
 		})
 		.append('input')
-		// .attr('checked', true)
 		.attr('type', 'checkbox')
 		.attr('class', 'attrCheckbox')
 		.attr('id', function(d, i) {

@@ -122,6 +122,7 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		})
 		.on('mouseover', function(d) {
 			tooltip.transition().duration(200).style('opacity', 0.9);
+			// TODO: The tooltip should first check which checkboxes have been selected
 			tooltip
 				.html(
 					d['Player'] +
@@ -138,10 +139,72 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 						' <br/> Completion Percentage: ' +
 						d['Cmp%'] +
 						'<br/> QBR: ' +
-						d.Rate
+						d.Rate +
+						'<div id="tipDiv"></div><br/>'
 				)
 				.style('left', d3.event.pageX + 20 + 'px')
 				.style('top', d3.event.pageY - 28 + 'px');
+
+			const w = 450;
+			const h = 450;
+			const margin = 10;
+
+			const radius = Math.min(width, height) / 4 - margin;
+
+			const checkedAttributes = getCheckedAttributes();
+
+			const pieChartData = {};
+			checkedAttributes.forEach((attr) => {
+				pieChartData[attr + '-Normalized'] = d[attr + '-Normalized'];
+			});
+
+			const pieSVG = d3
+				.select('#tipDiv')
+				.append('svg')
+				.attr('width', w)
+				.attr('height', h)
+				.append('g')
+				.attr('transform', 'translate(' + width / 4 + ',' + height / 4 + ')');
+
+			// TODO: Change the colors of the pie chart
+			const color = d3
+				.scaleOrdinal()
+				.domain(pieChartData)
+				.range([ '#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56' ]);
+
+			const pie = d3.pie().value(function(d) {
+				return d.value;
+			});
+			const data_ready = pie(d3.entries(pieChartData));
+
+			const arcGenerator = d3.arc().innerRadius(0).outerRadius(radius);
+
+			pieSVG
+				.selectAll('slices')
+				.data(data_ready)
+				.enter()
+				.append('path')
+				.attr('d', arcGenerator)
+				.attr('fill', function(d) {
+					return color(d.data.key);
+				})
+				.attr('stroke', 'black')
+				.style('stroke-width', '2px')
+				.style('opacity', 0.7);
+
+			pieSVG
+				.selectAll('slices')
+				.data(data_ready)
+				.enter()
+				.append('text')
+				.text(function(d) {
+					return d.data.key + ':' + d.data.value;
+				})
+				.attr('transform', function(d) {
+					return 'translate(' + arcGenerator.centroid(d) + ')';
+				})
+				.style('text-anchor', 'middle')
+				.style('font-size', 15);
 		})
 		.on('mouseout', function(d) {
 			tooltip.transition().duration(500).style('opacity', 0);
