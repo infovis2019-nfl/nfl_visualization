@@ -67,19 +67,21 @@ const updateScatterPlotYValues = (checkedAttributes) => {
 	});
 };
 
+// TODO: Normalized Selected Attributes with Selected Players
+// Update both the X values and then the Y values
 const updateScatterPlotXValues = (playerCheckbox) => {
 	if (playerCheckbox.checked) {
 		const newPlayers = qbData.filter(function(player) {
 			return player.Player == playerCheckbox.id;
 		});
-		shownData.push(newPlayers[0]);
+		shownPlayers.push(newPlayers[0]);
 	} else {
-		shownData = shownData.filter(function(player) {
+		shownPlayers = shownPlayers.filter(function(player) {
 			return player.Player != playerCheckbox.id;
 		});
 	}
 
-	const dot = svg.selectAll('.dot').data(shownData, function(d) {
+	const dot = svg.selectAll('.dot').data(shownPlayers, function(d) {
 		return d.Player;
 	});
 
@@ -110,7 +112,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 	dot.exit().remove();
 
-	const playerLabels = svg.selectAll('.playerNames').data(shownData, function(d) {
+	const playerLabels = svg.selectAll('.playerNames').data(shownPlayers, function(d) {
 		return d.Player;
 	});
 
@@ -129,7 +131,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 	playerLabels.exit().remove();
 
-	xScale.domain([ d3.min(shownData, xValue) - 10, d3.max(shownData, xValue) + 20 ]);
+	xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
 	svg.select('.x-axis').call(xAxis);
 	svg.transition().selectAll('.dot').duration(1500).attr('cx', xMap);
 	svg.transition().selectAll('.playerNames').duration(1500).attr('x', (d) => {
@@ -138,7 +140,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 };
 
 let qbData;
-let shownData = [];
+let shownPlayers = [];
 d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
 	initializeAttributeCheckboxes(data);
 	initializePlayerCheckboxes(data);
