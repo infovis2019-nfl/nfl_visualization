@@ -12,7 +12,6 @@ const getCheckedPlayers = () => {
 };
 
 const changePlayerCheckbox = (checkbox) => {
-	const checkedPlayers = getCheckedPlayers();
 	updateScatterPlotXValues(checkbox);
 };
 

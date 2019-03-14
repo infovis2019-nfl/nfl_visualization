@@ -13,7 +13,7 @@ const margin = { top: 20, right: 20, bottom: 30, left: 40 },
 const xValue = function(d) {
 	return d.G;
 };
-const xScale = d3.scaleLinear().range([ 0, width ]); // value -> display
+let xScale = d3.scaleLinear().range([ 0, width ]); // value -> display
 const xMap = function(d) {
 	return xScale(xValue(d));
 };
@@ -48,7 +48,6 @@ const svg = d3
 // add the tooltip area to the webpage
 const tooltip = d3.select('#visualization').append('div').attr('class', 'tooltip').style('opacity', 0);
 
-// TODO: Rename to updateScatterPlotYValues
 const updateScatterPlotYValues = (checkedAttributes) => {
 	normalizeSelectedAttributes(qbData, checkedAttributes);
 	yValue = function(d) {
@@ -129,6 +128,13 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		.style('text-anchor', 'middle');
 
 	playerLabels.exit().remove();
+
+	xScale.domain([ d3.min(shownData, xValue) - 10, d3.max(shownData, xValue) + 20 ]);
+	svg.select('.x-axis').call(xAxis);
+	svg.transition().selectAll('.dot').duration(1500).attr('cx', xMap);
+	svg.transition().selectAll('.playerNames').duration(1500).attr('x', (d) => {
+		return xMap(d);
+	});
 };
 
 let qbData;
@@ -144,7 +150,8 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
-	xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 20 ]);
+	// xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 20 ]);
+	xScale.domain([ 100, 200 ]);
 	yScale.domain([ 0, d3.max(data, yValue) + 1 ]);
 
 	// TODO: Figure out why the Axis labels aren't showing
