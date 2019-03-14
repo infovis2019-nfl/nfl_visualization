@@ -47,7 +47,7 @@ const getCheckedAttributes = () => {
 
 const changeAttributeCheckbox = (checkbox) => {
 	const checkedAttributes = getCheckedAttributes();
-	updateScatterPlot(checkedAttributes);
+	updateScatterPlotYValues(checkedAttributes);
 };
 
 const initializeAttributeCheckboxes = (data) => {

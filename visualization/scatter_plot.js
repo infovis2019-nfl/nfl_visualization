@@ -49,7 +49,7 @@ const svg = d3
 const tooltip = d3.select('#visualization').append('div').attr('class', 'tooltip').style('opacity', 0);
 
 // TODO: Rename to updateScatterPlotYValues
-const updateScatterPlot = (checkedAttributes) => {
+const updateScatterPlotYValues = (checkedAttributes) => {
 	normalizeSelectedAttributes(qbData, checkedAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
@@ -63,6 +63,9 @@ const updateScatterPlot = (checkedAttributes) => {
 
 	svg.select('.y-axis').call(yAxis);
 	svg.transition().selectAll('.dot').duration(1500).attr('cy', yMap);
+	svg.transition().selectAll('.playerNames').duration(1500).attr('y', (d) => {
+		return yMap(d) - 10;
+	});
 };
 
 const updateScatterPlotXValues = (playerCheckbox) => {
@@ -107,6 +110,25 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		});
 
 	dot.exit().remove();
+
+	const playerLabels = svg.selectAll('.playerNames').data(shownData, function(d) {
+		return d.Player;
+	});
+
+	playerLabels
+		.enter()
+		.append('text')
+		.attr('class', 'playerNames')
+		.text((d) => d.Player)
+		.attr('x', (d) => {
+			return xMap(d);
+		})
+		.attr('y', (d) => {
+			return yMap(d) - 10;
+		})
+		.style('text-anchor', 'middle');
+
+	playerLabels.exit().remove();
 };
 
 let qbData;
