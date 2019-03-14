@@ -65,7 +65,52 @@ const updateScatterPlot = (checkedAttributes) => {
 	svg.transition().selectAll('.dot').duration(1500).attr('cy', yMap);
 };
 
+const updateScatterPlotXValues = (playerCheckbox) => {
+	if (playerCheckbox.checked) {
+		const newPlayers = qbData.filter(function(player) {
+			return player.Player == playerCheckbox.id;
+		});
+		shownData.push(newPlayers[0]);
+	} else {
+		shownData = shownData.filter(function(player) {
+			return player.Player != playerCheckbox.id;
+		});
+	}
+
+	const dot = svg.selectAll('.dot').data(shownData, function(d) {
+		return d.Player;
+	});
+
+	dot
+		.enter()
+		.append('circle')
+		.attr('class', 'dot')
+		.attr('r', 5)
+		.attr('cx', xMap)
+		.attr('cy', yMap)
+		.style('fill', function(d) {
+			return color(cValue(d));
+		})
+		.on('mouseover', function(d) {
+			const checkedAttributes = getCheckedAttributes();
+
+			tooltip.transition().duration(200).style('opacity', 0.9);
+			tooltip
+				.html(generateTooltipHtml(d, checkedAttributes))
+				.style('left', d3.event.pageX + 20 + 'px')
+				.style('top', d3.event.pageY - 28 + 'px');
+
+			generatePieChart(checkedAttributes, d);
+		})
+		.on('mouseout', function(d) {
+			tooltip.transition().duration(500).style('opacity', 0);
+		});
+
+	dot.exit().remove();
+};
+
 let qbData;
+let shownData = [];
 d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
 	initializeAttributeCheckboxes(data);
 	initializePlayerCheckboxes(data);
@@ -110,55 +155,55 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.text('Yards');
 
 	// draw dots
-	svg
-		.selectAll('.dot')
-		.data(data)
-		.enter()
-		.append('circle')
-		.attr('class', 'dot')
-		.attr('r', 5)
-		.attr('cx', xMap)
-		.attr('cy', yMap)
-		.style('fill', function(d) {
-			return color(cValue(d));
-		})
-		.on('mouseover', function(d) {
-			const checkedAttributes = getCheckedAttributes();
+	// svg
+	// 	.selectAll('.dot')
+	// 	.data(data)
+	// 	.enter()
+	// 	.append('circle')
+	// 	.attr('class', 'dot')
+	// 	.attr('r', 5)
+	// 	.attr('cx', xMap)
+	// 	.attr('cy', yMap)
+	// 	.style('fill', function(d) {
+	// 		return color(cValue(d));
+	// 	})
+	// 	.on('mouseover', function(d) {
+	// 		const checkedAttributes = getCheckedAttributes();
 
-			tooltip.transition().duration(200).style('opacity', 0.9);
-			tooltip
-				.html(generateTooltipHtml(d, checkedAttributes))
-				.style('left', d3.event.pageX + 20 + 'px')
-				.style('top', d3.event.pageY - 28 + 'px');
+	// 		tooltip.transition().duration(200).style('opacity', 0.9);
+	// 		tooltip
+	// 			.html(generateTooltipHtml(d, checkedAttributes))
+	// 			.style('left', d3.event.pageX + 20 + 'px')
+	// 			.style('top', d3.event.pageY - 28 + 'px');
 
-			generatePieChart(checkedAttributes, d);
-		})
-		.on('mouseout', function(d) {
-			tooltip.transition().duration(500).style('opacity', 0);
-		});
+	// 		generatePieChart(checkedAttributes, d);
+	// 	})
+	// 	.on('mouseout', function(d) {
+	// 		tooltip.transition().duration(500).style('opacity', 0);
+	// 	});
 
 	// draw legend
-	const legend = svg
-		.selectAll('.legend')
-		.data(color.domain())
-		.enter()
-		.append('g')
-		.attr('class', 'legend')
-		.attr('transform', function(d, i) {
-			return 'translate(0,' + i * 20 + ')';
-		});
+	// const legend = svg
+	// 	.selectAll('.legend')
+	// 	.data(color.domain())
+	// 	.enter()
+	// 	.append('g')
+	// 	.attr('class', 'legend')
+	// 	.attr('transform', function(d, i) {
+	// 		return 'translate(0,' + i * 20 + ')';
+	// 	});
 
-	// draw legend colored rectangles
-	legend.append('rect').attr('x', width - 18).attr('width', 18).attr('height', 18).style('fill', color);
+	// // draw legend colored rectangles
+	// legend.append('rect').attr('x', width - 18).attr('width', 18).attr('height', 18).style('fill', color);
 
-	// draw legend text
-	legend
-		.append('text')
-		.attr('x', width - 24)
-		.attr('y', 9)
-		.attr('dy', '.35em')
-		.style('text-anchor', 'end')
-		.text(function(d) {
-			return d;
-		});
+	// // draw legend text
+	// legend
+	// 	.append('text')
+	// 	.attr('x', width - 24)
+	// 	.attr('y', 9)
+	// 	.attr('dy', '.35em')
+	// 	.style('text-anchor', 'end')
+	// 	.text(function(d) {
+	// 		return d;
+	// 	});
 });
