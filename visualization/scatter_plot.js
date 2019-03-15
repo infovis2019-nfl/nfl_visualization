@@ -77,7 +77,6 @@ const updateScatterPlotYValues = (checkedAttributes) => {
 	});
 };
 
-// Update both the X values and then the Y values
 const updateScatterPlotXValues = (playerCheckbox) => {
 	if (playerCheckbox.checked) {
 		const newPlayers = qbData.filter(function(player) {
@@ -97,14 +96,13 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
 	updateYAxis();
 
-	// TODO: Create a transition for all incoming points - currently if they are within the graph they appear immediately
 	dot
 		.enter()
 		.append('circle')
 		.attr('class', 'dot')
 		.attr('r', 5)
-		.attr('cx', xMap)
-		.attr('cy', yMap)
+		.attr('cx', 0)
+		.attr('cy', height)
 		.style('fill', function(d) {
 			return color(cValue(d));
 		})
@@ -134,12 +132,8 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		.append('text')
 		.attr('class', 'playerNames')
 		.text((d) => d.Player)
-		.attr('x', (d) => {
-			return xMap(d);
-		})
-		.attr('y', (d) => {
-			return yMap(d) - 10;
-		})
+		.attr('x', 0)
+		.attr('y', height - 10)
 		.style('text-anchor', 'middle');
 
 	playerLabels.exit().remove();
