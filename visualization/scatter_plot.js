@@ -49,11 +49,13 @@ const svg = d3
 const tooltip = d3.select('#visualization').append('div').attr('class', 'tooltip').style('opacity', 0);
 
 const updateYAxis = () => {
+	if (shownPlayers.length == 0) return;
 	yScale.domain([ 0, d3.max(shownPlayers, yValue) + 0.5 ]);
 	svg.select('.y-axis').call(yAxis);
 };
 
 const updateXAxis = () => {
+	if (shownPlayers.length == 0) return;
 	xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
 	svg.select('.x-axis').call(xAxis);
 };
@@ -69,7 +71,7 @@ const updateScatterPlotYValues = (checkedAttributes) => {
 		return combinedScore;
 	};
 
-	if (shownPlayers.length > 0) updateYAxis();
+	updateYAxis();
 
 	svg.transition().selectAll('.dot').duration(1500).attr('cy', yMap);
 	svg.transition().selectAll('.playerNames').duration(1500).attr('y', (d) => {
@@ -138,7 +140,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 	playerLabels.exit().remove();
 
-	if (shownPlayers.length > 0) updateXAxis();
+	updateXAxis();
 
 	const svgDots = svg.selectAll('.dot');
 	const svgPlayerNames = svg.selectAll('.playerNames');
