@@ -129,15 +129,15 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 	addOrRemoveDotLabels();
 
 	// We need to chain the transitions as we cannot have > 1 transition on the same object at a time
-	const dotsHorizontalTransition = svg.selectAll('.dot').transition().duration(1500).attr('cx', xMap);
-	dotsHorizontalTransition.transition().duration(500).attr('cy', yMap);
+	const dotsVerticalTransition = svg.selectAll('.dot').transition().duration(500).attr('cy', yMap);
+	dotsVerticalTransition.transition().duration(500).attr('cx', xMap);
 
-	const playerNamesHorizontalTransition = svg.selectAll('.playerNames').transition().duration(1500).attr('x', (d) => {
-		return xMap(d);
+	const playerNamesVerticalTransition = svg.selectAll('.playerNames').transition().duration(500).attr('y', (d) => {
+		return yMap(d) - 10;
 	});
 
-	playerNamesHorizontalTransition.transition().duration(500).attr('y', (d) => {
-		return yMap(d) - 10;
+	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
+		return xMap(d);
 	});
 };
 
