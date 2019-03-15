@@ -48,8 +48,18 @@ const svg = d3
 // add the tooltip area to the webpage
 const tooltip = d3.select('#visualization').append('div').attr('class', 'tooltip').style('opacity', 0);
 
+const updateYAxis = () => {
+	yScale.domain([ 0, d3.max(shownPlayers, yValue) + 0.5 ]);
+	svg.select('.y-axis').call(yAxis);
+};
+
+const updateXAxis = () => {
+	xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
+	svg.select('.x-axis').call(xAxis);
+};
+
 const updateScatterPlotYValues = (checkedAttributes) => {
-	normalizeSelectedAttributes(qbData, checkedAttributes);
+	normalizeSelectedAttributes(shownPlayers, checkedAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
@@ -58,16 +68,15 @@ const updateScatterPlotYValues = (checkedAttributes) => {
 		}
 		return combinedScore;
 	};
-	yScale.domain([ 0, d3.max(qbData, yValue) + 0.5 ]);
 
-	svg.select('.y-axis').call(yAxis);
+	if (shownPlayers.length > 0) updateYAxis();
+
 	svg.transition().selectAll('.dot').duration(1500).attr('cy', yMap);
 	svg.transition().selectAll('.playerNames').duration(1500).attr('y', (d) => {
 		return yMap(d) - 10;
 	});
 };
 
-// TODO: Normalized Selected Attributes with Selected Players
 // Update both the X values and then the Y values
 const updateScatterPlotXValues = (playerCheckbox) => {
 	if (playerCheckbox.checked) {
@@ -85,6 +94,10 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		return d.Player;
 	});
 
+	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
+	updateYAxis();
+
+	// TODO: Create a transition for all incoming points - currently if they are within the graph they appear immediately
 	dot
 		.enter()
 		.append('circle')
@@ -131,11 +144,20 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 	playerLabels.exit().remove();
 
-	xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
-	svg.select('.x-axis').call(xAxis);
-	svg.transition().selectAll('.dot').duration(1500).attr('cx', xMap);
-	svg.transition().selectAll('.playerNames').duration(1500).attr('x', (d) => {
+	if (shownPlayers.length > 0) updateXAxis();
+
+	const svgDots = svg.selectAll('.dot');
+	const svgPlayerNames = svg.selectAll('.playerNames');
+
+	const dotsHorizontalTransition = svgDots.transition().duration(1500).attr('cx', xMap);
+	dotsHorizontalTransition.transition().duration(500).attr('cy', yMap);
+
+	const playerNamesHorizontalTransition = svgPlayerNames.transition().duration(1500).attr('x', (d) => {
 		return xMap(d);
+	});
+
+	playerNamesHorizontalTransition.transition().duration(500).attr('y', (d) => {
+		return yMap(d) - 10;
 	});
 };
 
@@ -184,57 +206,4 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.attr('dy', '.71em')
 		.style('text-anchor', 'end')
 		.text('Yards');
-
-	// draw dots
-	// svg
-	// 	.selectAll('.dot')
-	// 	.data(data)
-	// 	.enter()
-	// 	.append('circle')
-	// 	.attr('class', 'dot')
-	// 	.attr('r', 5)
-	// 	.attr('cx', xMap)
-	// 	.attr('cy', yMap)
-	// 	.style('fill', function(d) {
-	// 		return color(cValue(d));
-	// 	})
-	// 	.on('mouseover', function(d) {
-	// 		const checkedAttributes = getCheckedAttributes();
-
-	// 		tooltip.transition().duration(200).style('opacity', 0.9);
-	// 		tooltip
-	// 			.html(generateTooltipHtml(d, checkedAttributes))
-	// 			.style('left', d3.event.pageX + 20 + 'px')
-	// 			.style('top', d3.event.pageY - 28 + 'px');
-
-	// 		generatePieChart(checkedAttributes, d);
-	// 	})
-	// 	.on('mouseout', function(d) {
-	// 		tooltip.transition().duration(500).style('opacity', 0);
-	// 	});
-
-	// draw legend
-	// const legend = svg
-	// 	.selectAll('.legend')
-	// 	.data(color.domain())
-	// 	.enter()
-	// 	.append('g')
-	// 	.attr('class', 'legend')
-	// 	.attr('transform', function(d, i) {
-	// 		return 'translate(0,' + i * 20 + ')';
-	// 	});
-
-	// // draw legend colored rectangles
-	// legend.append('rect').attr('x', width - 18).attr('width', 18).attr('height', 18).style('fill', color);
-
-	// // draw legend text
-	// legend
-	// 	.append('text')
-	// 	.attr('x', width - 24)
-	// 	.attr('y', 9)
-	// 	.attr('dy', '.35em')
-	// 	.style('text-anchor', 'end')
-	// 	.text(function(d) {
-	// 		return d;
-	// 	});
 });
