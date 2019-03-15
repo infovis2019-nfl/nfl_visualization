@@ -61,6 +61,5 @@ Example: `python3 normalize_passing.py career_passing_stats.csv career_passing_s
 
 ### Scatter Plot
 1. Allow for users to control the weights of each of the selected statistics
-2. Incorporate pie charts into the scatter plot on hover/click events
-3. Allow for users to control the # of players shown / select which players to show
-
+2. Fix the axes labels
+3. Allow users to toggle between normalizing against all players or selected players
