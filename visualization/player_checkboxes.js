@@ -11,10 +11,6 @@ const getCheckedPlayers = () => {
 	return checkedPlayers;
 };
 
-const changePlayerCheckbox = (checkbox) => {
-	updateScatterPlotXValues(checkbox);
-};
-
 const initializePlayerCheckboxes = (data) => {
 	const players = [];
 	data.forEach((player) => {
@@ -39,5 +35,5 @@ const initializePlayerCheckboxes = (data) => {
 		.attr('id', function(d, i) {
 			return d;
 		})
-		.attr('onClick', 'changePlayerCheckbox(this)');
+		.attr('onClick', 'updateScatterPlotXValues(this)');
 };

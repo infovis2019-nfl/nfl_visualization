@@ -45,7 +45,7 @@ const getCheckedAttributes = () => {
 	return checkedAttributes;
 };
 
-const changeAttributeCheckbox = (checkbox) => {
+const changeAttributeCheckbox = () => {
 	const checkedAttributes = getCheckedAttributes();
 	updateScatterPlotYValues(checkedAttributes);
 };
@@ -69,5 +69,5 @@ const initializeAttributeCheckboxes = (data) => {
 		.attr('id', function(d, i) {
 			return d;
 		})
-		.attr('onClick', 'changeAttributeCheckbox(this)');
+		.attr('onClick', 'changeAttributeCheckbox()');
 };

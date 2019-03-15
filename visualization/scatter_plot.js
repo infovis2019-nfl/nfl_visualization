@@ -97,6 +97,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
 	updateYAxis();
+	updateXAxis();
 
 	dot
 		.enter()
@@ -125,30 +126,13 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 	dot.exit().remove();
 
-	const playerLabels = svg.selectAll('.playerNames').data(shownPlayers, function(d) {
-		return d.Player;
-	});
+	addOrRemoveDotLabels();
 
-	playerLabels
-		.enter()
-		.append('text')
-		.attr('class', 'playerNames')
-		.text((d) => d.Player)
-		.attr('x', 0)
-		.attr('y', height - 10)
-		.style('text-anchor', 'middle');
-
-	playerLabels.exit().remove();
-
-	updateXAxis();
-
-	const svgDots = svg.selectAll('.dot');
-	const svgPlayerNames = svg.selectAll('.playerNames');
-
-	const dotsHorizontalTransition = svgDots.transition().duration(1500).attr('cx', xMap);
+	// We need to chain the transitions as we cannot have > 1 transition on the same object at a time
+	const dotsHorizontalTransition = svg.selectAll('.dot').transition().duration(1500).attr('cx', xMap);
 	dotsHorizontalTransition.transition().duration(500).attr('cy', yMap);
 
-	const playerNamesHorizontalTransition = svgPlayerNames.transition().duration(1500).attr('x', (d) => {
+	const playerNamesHorizontalTransition = svg.selectAll('.playerNames').transition().duration(1500).attr('x', (d) => {
 		return xMap(d);
 	});
 
@@ -164,13 +148,11 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 	initializePlayerCheckboxes(data);
 	qbData = data;
 
-	// change string (from CSV) into number format
 	data.forEach(function(d) {
 		d.G = +d.G;
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
-	// xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 20 ]);
 	xScale.domain([ 100, 200 ]);
 	yScale.domain([ 0, d3.max(data, yValue) + 1 ]);
 
