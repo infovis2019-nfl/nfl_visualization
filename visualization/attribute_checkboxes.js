@@ -45,15 +45,15 @@ const getCheckedAttributes = () => {
 	return checkedAttributes;
 };
 
-const change = (checkbox) => {
+const changeAttributeCheckbox = () => {
 	const checkedAttributes = getCheckedAttributes();
-	updateScatterPlot(checkedAttributes);
+	updateScatterPlotYValues(checkedAttributes);
 };
 
-const initializeCheckboxes = (data) => {
+const initializeAttributeCheckboxes = (data) => {
 	d3
-		.select('body')
-		.selectAll('input')
+		.select('#attrCol')
+		.selectAll('attributeInput')
 		.data(allowedAttributes)
 		.enter()
 		.append('label')
@@ -69,5 +69,5 @@ const initializeCheckboxes = (data) => {
 		.attr('id', function(d, i) {
 			return d;
 		})
-		.attr('onClick', 'change(this)');
+		.attr('onClick', 'changeAttributeCheckbox()');
 };

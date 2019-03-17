@@ -13,7 +13,7 @@ const margin = { top: 20, right: 20, bottom: 30, left: 40 },
 const xValue = function(d) {
 	return d.G;
 };
-const xScale = d3.scaleLinear().range([ 0, width ]); // value -> display
+let xScale = d3.scaleLinear().range([ 0, width ]); // value -> display
 const xMap = function(d) {
 	return xScale(xValue(d));
 };
@@ -37,7 +37,7 @@ const color = d3.scaleOrdinal(d3.schemeCategory10);
 
 // add the graph canvas to the body of the webpage
 const svg = d3
-	.select('body')
+	.select('#visualization')
 	.append('svg')
 	.attr('class', 'container')
 	.attr('width', width + margin.left + margin.right)
@@ -46,10 +46,22 @@ const svg = d3
 	.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 // add the tooltip area to the webpage
-const tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('opacity', 0);
+const tooltip = d3.select('#visualization').append('div').attr('class', 'tooltip').style('opacity', 0);
 
-const updateScatterPlot = (checkedAttributes) => {
-	normalizeSelectedAttributes(qbData, checkedAttributes);
+const updateYAxis = () => {
+	if (shownPlayers.length == 0) return;
+	yScale.domain([ 0, d3.max(shownPlayers, yValue) + 0.5 ]);
+	svg.select('.y-axis').call(yAxis);
+};
+
+const updateXAxis = () => {
+	if (shownPlayers.length == 0) return;
+	xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
+	svg.select('.x-axis').call(xAxis);
+};
+
+const updateScatterPlotYValues = (checkedAttributes) => {
+	normalizeSelectedAttributes(shownPlayers, checkedAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
@@ -58,24 +70,90 @@ const updateScatterPlot = (checkedAttributes) => {
 		}
 		return combinedScore;
 	};
-	yScale.domain([ 0, d3.max(qbData, yValue) + 0.5 ]);
 
-	svg.select('.y-axis').call(yAxis);
+	updateYAxis();
+
 	svg.transition().selectAll('.dot').duration(1500).attr('cy', yMap);
+	svg.transition().selectAll('.playerNames').duration(1500).attr('y', (d) => {
+		return yMap(d) - 10;
+	});
+};
+
+const updateScatterPlotXValues = (playerCheckbox) => {
+	if (playerCheckbox.checked) {
+		const newPlayers = qbData.filter(function(player) {
+			return player.Player == playerCheckbox.id;
+		});
+		shownPlayers.push(newPlayers[0]);
+	} else {
+		shownPlayers = shownPlayers.filter(function(player) {
+			return player.Player != playerCheckbox.id;
+		});
+	}
+
+	const dot = svg.selectAll('.dot').data(shownPlayers, function(d) {
+		return d.Player;
+	});
+
+	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
+	updateYAxis();
+	updateXAxis();
+
+	dot
+		.enter()
+		.append('circle')
+		.attr('class', 'dot')
+		.attr('r', 5)
+		.attr('cx', 0)
+		.attr('cy', height)
+		.style('fill', function(d) {
+			return color(cValue(d));
+		})
+		.on('mouseover', function(d) {
+			const checkedAttributes = getCheckedAttributes();
+
+			tooltip.transition().duration(200).style('opacity', 0.9);
+			tooltip
+				.html(generateTooltipHtml(d, checkedAttributes))
+				.style('left', d3.event.pageX + 20 + 'px')
+				.style('top', d3.event.pageY - 28 + 'px');
+
+			generatePieChart(checkedAttributes, d);
+		})
+		.on('mouseout', function(d) {
+			tooltip.transition().duration(500).style('opacity', 0);
+		});
+
+	dot.exit().remove();
+
+	addOrRemoveDotLabels();
+
+	// We need to chain the transitions as we cannot have > 1 transition on the same object at a time
+	const dotsVerticalTransition = svg.selectAll('.dot').transition().duration(500).attr('cy', yMap);
+	dotsVerticalTransition.transition().duration(500).attr('cx', xMap);
+
+	const playerNamesVerticalTransition = svg.selectAll('.playerNames').transition().duration(500).attr('y', (d) => {
+		return yMap(d) - 10;
+	});
+
+	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
+		return xMap(d);
+	});
 };
 
 let qbData;
+let shownPlayers = [];
 d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
-	initializeCheckboxes(data);
+	initializeAttributeCheckboxes(data);
+	initializePlayerCheckboxes(data);
 	qbData = data;
 
-	// change string (from CSV) into number format
 	data.forEach(function(d) {
 		d.G = +d.G;
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
-	xScale.domain([ d3.min(data, xValue) - 10, d3.max(data, xValue) + 20 ]);
+	xScale.domain([ 100, 200 ]);
 	yScale.domain([ 0, d3.max(data, yValue) + 1 ]);
 
 	// TODO: Figure out why the Axis labels aren't showing
@@ -106,57 +184,4 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.attr('dy', '.71em')
 		.style('text-anchor', 'end')
 		.text('Yards');
-
-	// draw dots
-	svg
-		.selectAll('.dot')
-		.data(data)
-		.enter()
-		.append('circle')
-		.attr('class', 'dot')
-		.attr('r', 5)
-		.attr('cx', xMap)
-		.attr('cy', yMap)
-		.style('fill', function(d) {
-			return color(cValue(d));
-		})
-		.on('mouseover', function(d) {
-			const checkedAttributes = getCheckedAttributes();
-
-			tooltip.transition().duration(200).style('opacity', 0.9);
-			tooltip
-				.html(generateTooltipHtml(d, checkedAttributes))
-				.style('left', d3.event.pageX + 20 + 'px')
-				.style('top', d3.event.pageY - 28 + 'px');
-
-			generatePieChart(checkedAttributes, d);
-		})
-		.on('mouseout', function(d) {
-			tooltip.transition().duration(500).style('opacity', 0);
-		});
-
-	// draw legend
-	const legend = svg
-		.selectAll('.legend')
-		.data(color.domain())
-		.enter()
-		.append('g')
-		.attr('class', 'legend')
-		.attr('transform', function(d, i) {
-			return 'translate(0,' + i * 20 + ')';
-		});
-
-	// draw legend colored rectangles
-	legend.append('rect').attr('x', width - 18).attr('width', 18).attr('height', 18).style('fill', color);
-
-	// draw legend text
-	legend
-		.append('text')
-		.attr('x', width - 24)
-		.attr('y', 9)
-		.attr('dy', '.35em')
-		.style('text-anchor', 'end')
-		.text(function(d) {
-			return d;
-		});
 });

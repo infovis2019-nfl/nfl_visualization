@@ -8,7 +8,7 @@ const normalizeSelectedAttributes = (data, attributes) => {
 
 		// normalize with respect to the max and min values
 		for (let j = 0; j < data.length; j++) {
-			const normalizedValue = (data[j][attributes[i]] - min) / (max - min);
+			const normalizedValue = max != min ? (data[j][attributes[i]] - min) / (max - min) : 1;
 			data[j][attributes[i] + '-Normalized'] = normalizedValue;
 		}
 	}
