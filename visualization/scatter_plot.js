@@ -65,10 +65,24 @@ const updateScatterPlotYValues = (checkedAttributes) => {
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
-		for (let i = 0; i < checkedAttributes.length; i++) {
-			combinedScore += parseFloat(d[checkedAttributes[i] + '-Normalized']);
+		let norm_value = 0;
+		let weight_total = 0
+		for (var weight in checkedAttributes) {
+			weight_label = String(weight)
+			norm_value = parseFloat(d[weight + '-Normalized'])
+			weight_value = parseFloat(checkedAttributes[weight]) / 100
+			weight_total += weight_value
+			combinedScore += (norm_value * weight_value);
 		}
+		combinedScore = combinedScore * (5/weight_total)
 		return combinedScore;
+
+		// // Calculate the combined score of each of the selected statistics
+		// let combinedScore = 0;
+		// for (let i = 0; i < checkedAttributes.length; i++) {
+		// 	combinedScore += parseFloat(d[checkedAttributes[i] + '-Normalized']);
+		// }
+		// return combinedScore;
 	};
 
 	updateYAxis();
@@ -143,7 +157,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 let qbData;
 let shownPlayers = [];
-d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
+d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
 	initializeAttributeCheckboxes(data);
 	initializePlayerCheckboxes(data);
 	qbData = data;
