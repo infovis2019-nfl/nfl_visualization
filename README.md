@@ -61,5 +61,4 @@ Example: `python3 normalize_passing.py career_passing_stats.csv career_passing_s
 
 ### Scatter Plot
 1. Allow for users to control the weights of each of the selected statistics
-2. Fix the axes labels
-3. Allow users to toggle between normalizing against all players or selected players
+2. Allow users to toggle between normalizing against all players or selected players
