@@ -168,8 +168,9 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.attr('class', 'label')
 		.attr('x', width)
 		.attr('y', -6)
+		.attr('fill', 'black')
 		.style('text-anchor', 'end')
-		.text('Total Normalized Score');
+		.text('Games Played');
 
 	// y-axis
 	svg
@@ -181,7 +182,8 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.attr('class', 'label')
 		.attr('transform', 'rotate(-90)')
 		.attr('y', 6)
+		.attr('fill', 'black')
 		.attr('dy', '.71em')
 		.style('text-anchor', 'end')
-		.text('Yards');
+		.text('Combined Score');
 });
