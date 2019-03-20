@@ -1,4 +1,4 @@
-const margin = { top: 20, right: 20, bottom: 30, left: 40 },
+const margin = { top: 20, right: 20, bottom: 50, left: 50 },
 	width = 960 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
 
@@ -163,27 +163,22 @@ d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data)
 		.attr('class', 'axis')
 		.attr('class', 'x-axis')
 		.attr('transform', 'translate(0,' + height + ')')
-		.call(xAxis)
+		.call(xAxis);
+
+	svg
 		.append('text')
-		.attr('class', 'label')
-		.attr('x', width)
-		.attr('y', -6)
-		.attr('fill', 'black')
-		.style('text-anchor', 'end')
+		.attr('transform', 'translate(' + width / 2 + ' ,' + (height + margin.top + 20) + ')')
+		.style('text-anchor', 'middle')
 		.text('Games Played');
 
 	// y-axis
+	svg.append('g').attr('class', 'axis').attr('class', 'y-axis').call(yAxis);
 	svg
-		.append('g')
-		.attr('class', 'axis')
-		.attr('class', 'y-axis')
-		.call(yAxis)
 		.append('text')
-		.attr('class', 'label')
 		.attr('transform', 'rotate(-90)')
-		.attr('y', 6)
-		.attr('fill', 'black')
-		.attr('dy', '.71em')
-		.style('text-anchor', 'end')
+		.attr('y', 0 - margin.left)
+		.attr('x', 0 - height / 2)
+		.attr('dy', '1em')
+		.style('text-anchor', 'middle')
 		.text('Combined Score');
 });
