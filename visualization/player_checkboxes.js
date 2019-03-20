@@ -18,11 +18,12 @@ const initializePlayerCheckboxes = (data) => {
 	});
 
 	d3
-		.select('#playerCol')
+		.select('#playerCheckboxList')
 		.selectAll('playerInput')
 		.data(players)
 		.enter()
 		.append('label')
+		.attr('class', 'playerCheckboxLabel')
 		.attr('for', function(d, i) {
 			return d;
 		})

@@ -34,3 +34,23 @@ pointer-events: none;
 .playerCheckbox {
     cursor: pointer;
 }
+
+#playerCheckboxList {
+    width: 50%;
+    height: 300px;
+    overflow-y: scroll;
+    margin: 0 auto;
+}
+
+.playerCheckbox {
+    vertical-align: middle;
+}
+
+.playerCheckboxLabel {
+    margin-bottom: 0px;
+    text-align: left;
+}
+
+.playerCheckboxLabel:nth-child(even) {
+    background: gray;
+}
