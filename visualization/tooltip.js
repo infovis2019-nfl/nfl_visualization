@@ -5,6 +5,7 @@ const generateTooltipHtml = (data, checkedAttributes) => {
 		checkedAttributes.forEach((attribute) => {
 			toolTipHtml += '<br/> ' + attribute + ': ' + data[attribute];
 		});
+		// TODO: Check whether or not we should display the pie chart for this player
 		toolTipHtml += '<br/> <h5> Combined Score Breakdown: </h5>';
 		toolTipHtml += '<br/> <div id="tipDiv"></div><br/>';
 	}
