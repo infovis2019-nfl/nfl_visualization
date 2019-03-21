@@ -1,5 +1,4 @@
 const generatePieChart = (checkedAttributes, d) => {
-	let nonZeroPieChart = false;
 	const width = 450,
 		height = 450,
 		radius = Math.min(width, height) / 6 - 10,
@@ -19,10 +18,9 @@ const generatePieChart = (checkedAttributes, d) => {
 			name: attr + '-Normalized',
 			val: d[attr + '-Normalized']
 		});
-		if (d[attr + '-Normalized'] > 0) nonZeroPieChart = true;
 	});
 
-	if (nonZeroPieChart) {
+	if (shouldDisplayPieChart(d, checkedAttributes)) {
 		const vis = d3
 			.select('#tipDiv')
 			.append('svg')
@@ -78,7 +76,6 @@ const generatePieChart = (checkedAttributes, d) => {
 			.style('fill', 'none')
 			.style('stroke', 'black')
 			.attr('d', function(d) {
-				console.log('The value of d is:', d);
 				if (d.data.val > 0) {
 					if (d.cx > d.ox) {
 						return 'M' + d.sx + ',' + d.sy + 'L' + d.ox + ',' + d.oy + ' ' + d.cx + ',' + d.cy;
