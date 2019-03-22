@@ -1,7 +1,9 @@
 const generatePieChart = (sliderAttributes, d) => {
-	const w = 400;
-	const h = 400;
-	const radius = 100;
+	const w = 450;
+	const h = 450;
+	const margin = 10;
+
+	const radius = Math.min(width, height) / 4 - margin;
 
 	const pieChartData = {};
 	for (var attr in sliderAttributes) {
@@ -29,7 +31,9 @@ const generatePieChart = (sliderAttributes, d) => {
 		return d.value;
 	});
 	const pieChartProportions = pie(d3.entries(pieChartData));
+
 	const arcGenerator = d3.arc().innerRadius(0).outerRadius(radius);
+
 	pieSVG
 		.selectAll('slices')
 		.data(pieChartProportions)

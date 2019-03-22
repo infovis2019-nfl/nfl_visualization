@@ -150,8 +150,8 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 let qbData;
 let shownPlayers = [];
 d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
-	initializePlayerCheckboxes(data);
 	initializeAttributeSliders(data);
+	initializePlayerCheckboxes(data);
 	
 	qbData = data;
 

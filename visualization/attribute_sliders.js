@@ -39,7 +39,7 @@ const initializeAttributeSliders = (data) => {
 		.attr('type', 'range')
 		.attr('class', 'weightSlider')
 		.attr('min', '1')
-		.attr('max', '100')
+        .attr('max', '100')
 		.attr('id', function(d, i) {
 			return d;
 		})
