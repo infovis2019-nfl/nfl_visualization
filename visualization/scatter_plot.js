@@ -67,7 +67,7 @@ const updateScatterPlotYValues = (sliderAttributes) => {
 		let combinedScore = 0;
 		let norm_value = 0;
 		let weight_total = 0
-		for (var attr in checkedAtsliderAttributestributes) {
+		for (var attr in sliderAttributes) {
 			norm_value = parseFloat(d[attr + '-Normalized'])
 			weight_value = parseFloat(sliderAttributes[attr]) / 100
 			weight_total += weight_value
