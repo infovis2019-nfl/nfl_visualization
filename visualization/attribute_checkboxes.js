@@ -50,7 +50,6 @@ const changeAttributeCheckbox = () => {
 	updateScatterPlotYValues(checkedAttributes);
 };
 
-
 const initializeAttributeCheckboxes = (data) => {
 	d3
 		.select('#attrCol')
