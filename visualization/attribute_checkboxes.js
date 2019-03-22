@@ -32,39 +32,24 @@ const allowedAttributes = [
 	// 'GWD'
 ];
 
-// const getCheckedAttributes = () => {
-// 	const checkedAttributes = [];
-// 	d3.selectAll('.attrCheckbox').each(function(d) {
-// 		const cb = d3.select(this);
-// 		const checked = cb.property('checked');
-// 		const id = cb.property('id');
-// 		if (checked) {
-// 			checkedAttributes.push(id);
-// 		}
-// 	});
-// 	return checkedAttributes;
-// };
-
-// const changeAttributeCheckbox = () => {
-// 	const checkedAttributes = getCheckedAttributes();
-// 	updateScatterPlotYValues(checkedAttributes);
-// };
-
 const getCheckedAttributes = () => {
-	const weights = [];
-	d3.selectAll('.weightSlider').each(function(d) {
-		const slider = d3.select(this);
-		const weight = slider.property('value');
-		const id = slider.property('id');
-		weights[id] = weight
+	const checkedAttributes = [];
+	d3.selectAll('.attrCheckbox').each(function(d) {
+		const cb = d3.select(this);
+		const checked = cb.property('checked');
+		const id = cb.property('id');
+		if (checked) {
+			checkedAttributes.push(id);
+		}
 	});
-	return weights;
+	return checkedAttributes;
 };
 
-const changeWeightSlider = () => {
-	const weights = getCheckedAttributes();
-	updateScatterPlotYValues(weights);
+const changeAttributeCheckbox = () => {
+	const checkedAttributes = getCheckedAttributes();
+	updateScatterPlotYValues(checkedAttributes);
 };
+
 
 const initializeAttributeCheckboxes = (data) => {
 	d3
@@ -80,20 +65,10 @@ const initializeAttributeCheckboxes = (data) => {
 			return d;
 		})
 		.append('input')
-		.attr('type', 'range')
-		.attr('class', 'weightSlider')
-		.attr('min', '1')
-		.attr('max', '100')
+		.attr('type', 'checkbox')
+		.attr('class', 'attrCheckbox')
 		.attr('id', function(d, i) {
 			return d;
 		})
-		.attr('onClick', 'changeWeightSlider(this)');
-
-		// .append('input')
-		// .attr('type', 'checkbox')
-		// .attr('class', 'attrCheckbox')
-		// .attr('id', function(d, i) {
-		// 	return d;
-		// })
-		// .attr('onClick', 'changeAttributeCheckbox()');
+		.attr('onClick', 'changeAttributeCheckbox()');
 };

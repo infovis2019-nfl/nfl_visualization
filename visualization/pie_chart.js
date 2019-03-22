@@ -1,4 +1,4 @@
-const generatePieChart = (checkedAttributes, d) => {
+const generatePieChart = (sliderAttributes, d) => {
 	const w = 450;
 	const h = 450;
 	const margin = 10;
@@ -6,10 +6,10 @@ const generatePieChart = (checkedAttributes, d) => {
 	const radius = Math.min(width, height) / 4 - margin;
 
 	const pieChartData = {};
-	for (var attr in checkedAttributes) {
+	for (var attr in sliderAttributes) {
 		attr_label = attr + '-Normalized'
 		norm_value = parseFloat(d[attr_label])
-		weight = parseFloat(checkedAttributes[attr]) / 100
+		weight = parseFloat(sliderAttributes[attr]) / 100
 		pieChartData[attr_label] = norm_value * weight;
 	}
 	console.log(pieChartData)

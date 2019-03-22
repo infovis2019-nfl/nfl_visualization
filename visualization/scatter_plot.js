@@ -60,29 +60,21 @@ const updateXAxis = () => {
 	svg.select('.x-axis').call(xAxis);
 };
 
-const updateScatterPlotYValues = (checkedAttributes) => {
-	normalizeSelectedAttributes(shownPlayers, checkedAttributes);
+const updateScatterPlotYValues = (sliderAttributes) => {
+	normalizeSelectedAttributes(shownPlayers, sliderAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
 		let norm_value = 0;
 		let weight_total = 0
-		for (var weight in checkedAttributes) {
-			weight_label = String(weight)
-			norm_value = parseFloat(d[weight + '-Normalized'])
-			weight_value = parseFloat(checkedAttributes[weight]) / 100
+		for (var attr in checkedAtsliderAttributestributes) {
+			norm_value = parseFloat(d[attr + '-Normalized'])
+			weight_value = parseFloat(sliderAttributes[attr]) / 100
 			weight_total += weight_value
 			combinedScore += (norm_value * weight_value);
 		}
 		combinedScore = combinedScore * (5/weight_total)
 		return combinedScore;
-
-		// // Calculate the combined score of each of the selected statistics
-		// let combinedScore = 0;
-		// for (let i = 0; i < checkedAttributes.length; i++) {
-		// 	combinedScore += parseFloat(d[checkedAttributes[i] + '-Normalized']);
-		// }
-		// return combinedScore;
 	};
 
 	updateYAxis();
@@ -109,7 +101,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		return d.Player;
 	});
 
-	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
+	normalizeSelectedAttributes(shownPlayers, getSliderAttributes());
 	updateYAxis();
 	updateXAxis();
 
@@ -124,15 +116,15 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 			return color(cValue(d));
 		})
 		.on('mouseover', function(d) {
-			const checkedAttributes = getCheckedAttributes();
+			const sliderAttributes = getSliderAttributes();
 
 			tooltip.transition().duration(200).style('opacity', 0.9);
 			tooltip
-				.html(generateTooltipHtml(d, checkedAttributes))
+				.html(generateTooltipHtml(d, sliderAttributes))
 				.style('left', d3.event.pageX + 70 + 'px')
 				.style('top', d3.event.pageY - 40 + 'px');
 
-			generatePieChart(checkedAttributes, d);
+			generatePieChart(sliderAttributes, d);
 		})
 		.on('mouseout', function(d) {
 			tooltip.transition().duration(500).style('opacity', 0);
@@ -158,8 +150,9 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 let qbData;
 let shownPlayers = [];
 d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
-	initializeAttributeCheckboxes(data);
 	initializePlayerCheckboxes(data);
+	initializeAttributeSliders(data);
+	
 	qbData = data;
 
 	data.forEach(function(d) {
