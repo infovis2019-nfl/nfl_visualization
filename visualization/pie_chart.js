@@ -6,9 +6,13 @@ const generatePieChart = (checkedAttributes, d) => {
 	const radius = Math.min(width, height) / 4 - margin;
 
 	const pieChartData = {};
-	checkedAttributes.forEach((attr) => {
-		pieChartData[attr + '-Normalized'] = d[attr + '-Normalized'];
-	});
+	for (var attr in checkedAttributes) {
+		attr_label = attr + '-Normalized'
+		norm_value = parseFloat(d[attr_label])
+		weight = parseFloat(checkedAttributes[attr]) / 100
+		pieChartData[attr_label] = norm_value * weight;
+	}
+	console.log(pieChartData)
 
 	const pieSVG = d3
 		.select('#tipDiv')
@@ -25,6 +29,7 @@ const generatePieChart = (checkedAttributes, d) => {
 		.range([ '#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56' ]);
 
 	const pie = d3.pie().value(function(d) {
+		console.log(d.value);
 		return d.value;
 	});
 	const pieChartProportions = pie(d3.entries(pieChartData));
@@ -59,4 +64,6 @@ const generatePieChart = (checkedAttributes, d) => {
 		})
 		.style('text-anchor', 'middle')
 		.style('font-size', 15);
+
+	console.log('we done.')
 };
