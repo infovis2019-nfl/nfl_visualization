@@ -1,9 +1,7 @@
 const generatePieChart = (sliderAttributes, d) => {
-	const w = 450;
-	const h = 450;
-	const margin = 10;
-
-	const radius = Math.min(width, height) / 4 - margin;
+	const w = 400;
+	const h = 400;
+	const radius = 100;
 
 	const pieChartData = {};
 	for (var attr in sliderAttributes) {
@@ -12,7 +10,6 @@ const generatePieChart = (sliderAttributes, d) => {
 		weight = parseFloat(sliderAttributes[attr]) / 100
 		pieChartData[attr_label] = norm_value * weight;
 	}
-	console.log(pieChartData)
 
 	const pieSVG = d3
 		.select('#tipDiv')
@@ -29,13 +26,10 @@ const generatePieChart = (sliderAttributes, d) => {
 		.range([ '#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56' ]);
 
 	const pie = d3.pie().value(function(d) {
-		console.log(d.value);
 		return d.value;
 	});
 	const pieChartProportions = pie(d3.entries(pieChartData));
-
 	const arcGenerator = d3.arc().innerRadius(0).outerRadius(radius);
-
 	pieSVG
 		.selectAll('slices')
 		.data(pieChartProportions)
@@ -64,6 +58,4 @@ const generatePieChart = (sliderAttributes, d) => {
 		})
 		.style('text-anchor', 'middle')
 		.style('font-size', 15);
-
-	console.log('we done.')
 };
