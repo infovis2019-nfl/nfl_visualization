@@ -39,7 +39,6 @@ const color = d3.scaleOrdinal(d3.schemeCategory10);
 const svg = d3
 	.select('#visualization')
 	.append('svg')
-	.attr('class', 'container')
 	.attr('width', width + margin.left + margin.right)
 	.attr('height', height + margin.top + margin.bottom)
 	.append('g')
