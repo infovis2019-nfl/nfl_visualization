@@ -112,7 +112,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		.on('mouseover', function(d) {
 			const checkedAttributes = getCheckedAttributes();
 
-			tooltip.transition().duration(200).style('opacity', 0.9);
+			tooltip.transition().duration(200).style('opacity', 1);
 			tooltip
 				.html(generateTooltipHtml(d, checkedAttributes))
 				.style('left', d3.event.pageX + 70 + 'px')

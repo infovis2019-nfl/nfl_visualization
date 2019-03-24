@@ -1,6 +1,6 @@
 const generatePieChart = (checkedAttributes, d) => {
-	const width = 450,
-		height = 450,
+	const width = 400,
+		height = 400,
 		radius = Math.min(width, height) / 6 - 10,
 		color = d3.scaleOrdinal(d3.schemeCategory10),
 		donut = d3.pie(),
