@@ -1,20 +1,24 @@
-const shouldDisplayPieChart = (data, checkedAttributes) => {
+const shouldDisplayPieChart = (d, checkedAttributes) => {
 	let displayPieChart = false;
 	checkedAttributes.forEach((attr) => {
-		if (data[attr + '-Normalized'] > 0) displayPieChart = true;
+		if (d[attr + '-Normalized'] > 0) displayPieChart = true;
 	});
 	return displayPieChart;
 };
 
-const generateTooltipHtml = (data, checkedAttributes) => {
-	let toolTipHtml = data.Player;
-	if (checkedAttributes.length > 0) {
-		toolTipHtml += '<br/> (' + xValue(data) + ', ' + yValue(data) + ')';
-		checkedAttributes.forEach((attribute) => {
-			toolTipHtml += '<br/> ' + attribute + ': ' + data[attribute];
-		});
+const generateTooltipHtmlRawStats = (d, checkedAttributes) => {
+	let toolTipHtml = d.Player;
+	toolTipHtml += '<br/> (' + xValue(d) + ', ' + yValue(d) + ')';
+	checkedAttributes.forEach((attribute) => {
+		toolTipHtml += '<br/> ' + attribute + ': ' + d[attribute];
+	});
+	return toolTipHtml;
+};
 
-		if (shouldDisplayPieChart(data, checkedAttributes)) {
+const generateTooltipHtmlPieChart = (d, checkedAttributes) => {
+	let toolTipHtml = d.Player;
+	if (checkedAttributes.length > 0) {
+		if (shouldDisplayPieChart(d, checkedAttributes)) {
 			toolTipHtml += '<br/> <h5> Combined Score Breakdown: </h5>';
 			toolTipHtml += '<br/> <div id="tipDiv"></div><br/>';
 		} else {

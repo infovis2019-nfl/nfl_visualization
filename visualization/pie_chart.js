@@ -1,4 +1,4 @@
-const generatePieChart = (checkedAttributes, d) => {
+const generatePieChart = (d, checkedAttributes) => {
 	const width = 400,
 		height = 400,
 		radius = Math.min(width, height) / 6 - 10,
