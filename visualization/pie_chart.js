@@ -21,14 +21,14 @@ const generatePieChart = (d, checkedAttributes) => {
 	});
 
 	if (shouldDisplayPieChart(d, checkedAttributes)) {
-		const vis = d3
+		const pieSVG = d3
 			.select('#tipDiv')
 			.append('svg')
 			.data([ pieChartData ])
 			.attr('width', width + 150)
 			.attr('height', height);
 
-		const arcs = vis
+		const arcs = pieSVG
 			.selectAll('arc')
 			.data(
 				donut.value(function(d) {
@@ -85,7 +85,7 @@ const generatePieChart = (d, checkedAttributes) => {
 				}
 			});
 
-		const legend = vis
+		const legend = pieSVG
 			.selectAll('.legend')
 			.data(color.domain())
 			.enter()

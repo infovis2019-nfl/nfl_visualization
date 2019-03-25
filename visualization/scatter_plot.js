@@ -98,12 +98,12 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 	updateYAxis();
 	updateXAxis();
 
-	let displayRawStats = true;
+	let displayRawStatsOnClick = true;
 	dot
 		.enter()
 		.append('circle')
 		.attr('class', 'dot')
-		.attr('r', 5)
+		.attr('r', 10)
 		.attr('cx', 0)
 		.attr('cy', height)
 		.style('fill', function(d) {
@@ -111,7 +111,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		})
 		.style('cursor', 'pointer')
 		.on('mouseover', function(d) {
-			displayRawStats = true;
+			displayRawStatsOnClick = true;
 			const checkedAttributes = getCheckedAttributes();
 
 			tooltip.transition().duration(200).style('opacity', 1);
@@ -125,12 +125,12 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		.on('click', function(d) {
 			const checkedAttributes = getCheckedAttributes();
 			tooltip.html(
-				displayRawStats == true
+				displayRawStatsOnClick == true
 					? generateTooltipHtmlRawStats(d, checkedAttributes)
 					: generateTooltipHtmlPieChart(d, checkedAttributes)
 			);
-			if (!displayRawStats) generatePieChart(d, checkedAttributes);
-			displayRawStats = !displayRawStats;
+			if (!displayRawStatsOnClick) generatePieChart(d, checkedAttributes);
+			displayRawStatsOnClick = !displayRawStatsOnClick;
 		})
 		.on('mouseout', function(d) {
 			tooltip.transition().duration(500).style('opacity', 0);
