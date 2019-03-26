@@ -77,7 +77,8 @@ const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
 				num_attr++;
 			}
 		}
-		combinedScore = combinedScore * num_attr / weight_total;
+
+		combinedScore = checkedAttributes.length > 0 ? combinedScore * num_attr / weight_total : 0;
 		return combinedScore;
 	};
 
