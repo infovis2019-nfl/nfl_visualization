@@ -11,12 +11,15 @@ const getCheckedPlayers = () => {
 	return checkedPlayers;
 };
 
-const initializePlayerCheckboxes = (data) => {
+const loadPlayersFromData = (data) => {
 	const players = [];
 	data.forEach((player) => {
 		players.push(player.Player);
 	});
+	setPlayerCheckboxes(players);
+}
 
+const setPlayerCheckboxes = (players) => {
 	d3
 		.select('#playerCheckboxList')
 		.selectAll('playerInput')

@@ -17,12 +17,6 @@ const getSliderAttributes = () => {
 	return weights;
 };
 
-const changeWeightSlider = () => {
-	const checkedAttributes = getCheckedAttributes();
-	const sliderAttributes = getSliderAttributes();
-	updateScatterPlotYValues(checkedAttributes, sliderAttributes);
-};
-
 const initializeAttributeSliders = (data) => {
 	d3
 		.select('#weightCol')
@@ -44,5 +38,5 @@ const initializeAttributeSliders = (data) => {
 		.attr('id', function(d, i) {
 			return d;
 		})
-        .attr('onClick', 'changeWeightSlider(this)');
+        .attr('onClick', 'updatePlot()');
 };

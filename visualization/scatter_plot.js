@@ -60,7 +60,7 @@ const updateXAxis = () => {
 };
 
 const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
-	normalizeSelectedAttributes(shownPlayers, sliderAttributes);
+	normalizeSelectedAttributes(shownPlayers, checkedAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
@@ -104,7 +104,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		return d.Player;
 	});
 
-	normalizeSelectedAttributes(shownPlayers, getSliderAttributes());
+	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
 	updateYAxis();
 	updateXAxis();
 
@@ -164,12 +164,27 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 	});
 };
 
-let qbData;
+const updatePlot = () => {
+    const checkedPositions = getCheckedPositions();
+	const checkedAttributes = getCheckedAttributes();
+	const sliderAttributes = getSliderAttributes();
+	updateScatterPlotYValues(checkedAttributes, sliderAttributes);
+}
+
+let data, qbData, wrData;
 let shownPlayers = [];
-d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
+Promise.all([
+	d3.csv('http://localhost:3000/data/career_passing_stats_10'),
+	d3.csv('http://localhost:3000/data/career_receiving_stats_10'),
+]).then(function(csv_data) {
+	data = csv_data[0];
+	wrData = csv_data[1];
+	
+	initializePositionsCheckboxes(data);
 	initializeAttributeCheckboxes(data);
 	initializeAttributeSliders(data);
-	initializePlayerCheckboxes(data);
+	loadPlayersFromData(data);
+	loadPlayersFromData(wrData);
 	
 	qbData = data;
 

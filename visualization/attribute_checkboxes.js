@@ -45,12 +45,6 @@ const getCheckedAttributes = () => {
 	return checkedAttributes;
 };
 
-const changeAttributeCheckbox = () => {
-	const checkedAttributes = getCheckedAttributes();
-	const sliderAttributes = getSliderAttributes();
-	updateScatterPlotYValues(checkedAttributes, sliderAttributes);
-};
-
 const initializeAttributeCheckboxes = (data) => {
 	d3
 		.select('#attrCol')
@@ -70,5 +64,5 @@ const initializeAttributeCheckboxes = (data) => {
 		.attr('id', function(d, i) {
 			return d;
 		})
-		.attr('onClick', 'changeAttributeCheckbox()');
+		.attr('onClick', 'updatePlot()');
 };
