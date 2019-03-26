@@ -47,7 +47,8 @@ const getCheckedAttributes = () => {
 
 const changeAttributeCheckbox = () => {
 	const checkedAttributes = getCheckedAttributes();
-	updateScatterPlotYValues(checkedAttributes);
+	const sliderAttributes = getSliderAttributes();
+	updateScatterPlotYValues(checkedAttributes, sliderAttributes);
 };
 
 const initializeAttributeCheckboxes = (data) => {

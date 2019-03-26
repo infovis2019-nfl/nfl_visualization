@@ -59,14 +59,24 @@ const updateXAxis = () => {
 	svg.select('.x-axis').call(xAxis);
 };
 
-const updateScatterPlotYValues = (checkedAttributes) => {
-	normalizeSelectedAttributes(shownPlayers, checkedAttributes);
+const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
+	normalizeSelectedAttributes(shownPlayers, sliderAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
-		for (let i = 0; i < checkedAttributes.length; i++) {
-			combinedScore += parseFloat(d[checkedAttributes[i] + '-Normalized']);
+		let norm_value = 0;
+		let weight_total = 0
+		let num_attr = 0
+		for (var attr in sliderAttributes) {
+			if (checkedAttributes.includes(attr)) {
+				norm_value = parseFloat(d[attr + '-Normalized'])
+				weight_value = parseFloat(sliderAttributes[attr]) / 100
+				weight_total += weight_value
+				combinedScore += (norm_value * weight_value);
+				num_attr++
+			}
 		}
+		combinedScore = combinedScore * num_attr / weight_total
 		return combinedScore;
 	};
 
@@ -94,7 +104,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		return d.Player;
 	});
 
-	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
+	normalizeSelectedAttributes(shownPlayers, getSliderAttributes());
 	updateYAxis();
 	updateXAxis();
 
@@ -113,6 +123,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		.on('mouseover', function(d) {
 			displayRawStatsOnClick = true;
 			const checkedAttributes = getCheckedAttributes();
+			const sliderAttributes = getSliderAttributes();
 
 			tooltip.transition().duration(200).style('opacity', 1);
 			tooltip
@@ -155,9 +166,11 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 let qbData;
 let shownPlayers = [];
-d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
+d3.csv('http://localhost:3000/data/career_passing_stats_10_normalized').then(function(data) {
 	initializeAttributeCheckboxes(data);
+	initializeAttributeSliders(data);
 	initializePlayerCheckboxes(data);
+	
 	qbData = data;
 
 	data.forEach(function(d) {

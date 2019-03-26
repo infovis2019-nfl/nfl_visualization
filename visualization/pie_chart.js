@@ -19,6 +19,13 @@ const generatePieChart = (d, checkedAttributes) => {
 			val: d[attr + '-Normalized']
 		});
 	});
+	// const pieChartData = {};
+	// for (var attr in sliderAttributes) {
+	// 	attr_label = attr + '-Normalized'
+	// 	norm_value = parseFloat(d[attr_label])
+	// 	weight = parseFloat(sliderAttributes[attr]) / 100
+	// 	pieChartData[attr_label] = norm_value * weight;
+	// }
 
 	if (shouldDisplayPieChart(d, checkedAttributes)) {
 		const pieSVG = d3

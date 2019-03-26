@@ -15,7 +15,7 @@ usage: matcher.py [-h]
 
 Match rows in a CSV file
 
-positional arguments:
+positional arguments:x
   input_file_name   Name of the input CSV file [.csv included]
   output_file_name  Name of the output CSV file [.csv included]
   column_number     CSV Column Number to Match
@@ -62,3 +62,7 @@ Example: `python3 normalize_passing.py career_passing_stats.csv career_passing_s
 ### Scatter Plot
 1. Allow for users to control the weights of each of the selected statistics
 2. Allow users to toggle between normalizing against all players or selected players
+3. Give the option to normalize across all players or only selected players
+4. Give the option to toggle player name labels on and off
+5. General Styling - more visually appealing Charles cares about HCI
+6. As we grow the number of players, have an easier way of deselecting them - potentially on double click of dot
