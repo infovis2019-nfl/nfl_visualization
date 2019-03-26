@@ -1,4 +1,4 @@
-const generatePieChart = (checkedAttributes, d) => {
+const generatePieChart = (sliderAttributes, d) => {
 	const w = 450;
 	const h = 450;
 	const margin = 10;
@@ -6,9 +6,12 @@ const generatePieChart = (checkedAttributes, d) => {
 	const radius = Math.min(width, height) / 4 - margin;
 
 	const pieChartData = {};
-	checkedAttributes.forEach((attr) => {
-		pieChartData[attr + '-Normalized'] = d[attr + '-Normalized'];
-	});
+	for (var attr in sliderAttributes) {
+		attr_label = attr + '-Normalized'
+		norm_value = parseFloat(d[attr_label])
+		weight = parseFloat(sliderAttributes[attr]) / 100
+		pieChartData[attr_label] = norm_value * weight;
+	}
 
 	const pieSVG = d3
 		.select('#tipDiv')
