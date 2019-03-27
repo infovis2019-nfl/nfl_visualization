@@ -111,7 +111,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		.enter()
 		.append('circle')
 		.attr('class', 'dot')
-		.attr('r', 5)
+		.attr('r', 7)
 		.attr('cx', 0)
 		.attr('cy', height)
 		.style('fill', function(d) {
@@ -130,6 +130,13 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		})
 		.on('mouseout', function(d) {
 			tooltip.transition().duration(500).style('opacity', 0);
+		})
+		.on('click', function(d) {
+			if(d3.selectAll('.playerNames').style('opacity') == 0){
+				svg.selectAll('.playerNames').style('opacity', 1);
+			}else{
+				svg.selectAll('.playerNames').style('opacity', 0);
+			}
 		});
 
 	dot.exit().remove();
@@ -146,7 +153,8 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 
 	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
 		return xMap(d);
-	});
+	})
+		.transition().duration(3000).style('opacity', 0);
 };
 
 let qbData;
