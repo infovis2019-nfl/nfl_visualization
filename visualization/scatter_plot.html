@@ -16,17 +16,22 @@
         <div id="visualization">
             
         </div>
-        <div class="row">
-            <div class="col-md-2" id='posCol'><h3>Positions</h3></div>
-            <div class="col-md-2" id='attrCol'><h3>Stats</h3></div>
+        <div id='qbRow' class="row">
+            <div class="col-md-3" id='attrCol'><h3>Stats</h3></div>
             <div class="col-md-3" id='weightCol'><h3>Weights</h3></div>
-            <div class="col-md-5" id='playerCol'>
+            <div class="col-md-6" id='playerCol'>
                 <h3>Players</h3>
-                <div id="playerCheckboxList"></div>
+                <div id="playerCheckboxListQb"></div>
+            </div>
+        </div>
+        <div id='wrRow' class="row">
+            <div class="col-md-3" id='attrColWr'></div>
+            <div class="col-md-3" id='weightColWr'></div>
+            <div class="col-md-6" id='playerColWr'>
+                <div id="playerCheckboxListWr"></div>
             </div>
         </div>
         <script src="normalize.js"></script>
-        <script src="position_checkboxes.js"></script>
         <script src="attribute_checkboxes.js"></script>
         <script src="attribute_sliders.js"></script>
         <script src="player_checkboxes.js"></script>
