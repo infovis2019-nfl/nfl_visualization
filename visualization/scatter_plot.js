@@ -85,18 +85,18 @@ const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
 		let combinedScore = 0;
 		let norm_value = 0;
 		let weight_total = 0;
-		let num_attr = 0;
-		for (var attr in sliderAttributes) {
-			if (checkedAttributes.includes(attr)) {
+		let posChecked = checkedAttributes[d.Pos];
+		let posSlider = sliderAttributes[d.Pos];
+
+		for (var attr in posSlider) {
+			if (posChecked.includes(attr)) {
 				norm_value = parseFloat(d[attr + '-Normalized']);
-				weight_value = parseFloat(sliderAttributes[attr]) / 100;
+				weight_value = parseFloat(posSlider[attr]) / 100;
 				weight_total += weight_value;
 				combinedScore += norm_value * weight_value;
-				num_attr++;
 			}
 		}
-
-		combinedScore = checkedAttributes.length > 0 ? combinedScore * num_attr / weight_total : 0;
+		combinedScore = weight_total > 0 ? combinedScore / weight_total : 0;
 		return combinedScore;
 	};
 
@@ -106,9 +106,15 @@ const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
 
 const updateScatterPlotXValues = (playerCheckbox) => {
 	if (playerCheckbox.checked) {
-		const newPlayers = qbData.filter(function(player) {
+		let newPlayers;
+		newPlayers = qbData.filter(function(player) {
 			return player.Player == playerCheckbox.id;
 		});
+		if (newPlayers.length == 0) {
+			newPlayers = wrData.filter(function(player) {
+				return player.Player == playerCheckbox.id;
+			});
+		}
 		shownPlayers.push(newPlayers[0]);
 	} else {
 		shownPlayers = shownPlayers.filter(function(player) {
@@ -138,8 +144,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		.style('cursor', 'pointer')
 		.on('mouseover', function(d) {
 			displayRawStatsOnClick = true;
-			const checkedAttributes = getCheckedAttributes();
-			const sliderAttributes = getSliderAttributes();
+			const checkedAttributes = getCheckedAttributes()[d.Pos];
 
 			tooltip.transition().duration(200).style('opacity', 1);
 			tooltip
@@ -150,7 +155,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 			generatePieChart(d, checkedAttributes);
 		})
 		.on('click', function(d) {
-			const checkedAttributes = getCheckedAttributes();
+			const checkedAttributes = getCheckedAttributes()[d.Pos];
 			tooltip.html(
 				displayRawStatsOnClick == true
 					? generateTooltipHtmlRawStats(d, checkedAttributes)
@@ -169,22 +174,37 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 	updateScatterPlotDotAndLabelPositions();
 };
 
-let qbData;
+const updatePlot = () => {
+	const checkedAttributes = getCheckedAttributes();
+	const sliderAttributes = getSliderAttributes();
+	updateScatterPlotYValues(checkedAttributes, sliderAttributes);
+};
+
+let data, qbData, wrData;
 let shownPlayers = [];
-d3.csv('http://localhost:3000/data/career_passing_stats_10').then(function(data) {
+Promise.all([
+	d3.csv('http://localhost:3000/data/career_passing_stats_10'),
+	d3.csv('http://localhost:3000/data/career_receiving_stats_10')
+]).then(function(data) {
+	qbData = data[0];
+	wrData = data[1];
+
 	initializeAttributeCheckboxes(data);
 	initializeAttributeSliders(data);
-	initializePlayerCheckboxes(data);
+	loadPlayersFromData(qbData, '#playerCheckboxListQb');
+	loadPlayersFromData(wrData, '#playerCheckboxListWr');
 
-	qbData = data;
+	qbData.forEach(function(d) {
+		d.G = +d.G;
+	});
 
-	data.forEach(function(d) {
+	wrData.forEach(function(d) {
 		d.G = +d.G;
 	});
 
 	// don't want dots overlapping axis, so add in buffer to data domain
 	xScale.domain([ 100, 200 ]);
-	yScale.domain([ 0, d3.max(data, yValue) + 1 ]);
+	yScale.domain([ 0, d3.max(qbData, yValue) + 1 ]);
 
 	// TODO: Figure out why the Axis labels aren't showing
 	// x-axis
