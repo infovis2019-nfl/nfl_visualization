@@ -59,7 +59,26 @@ const updateXAxis = () => {
 	svg.select('.x-axis').call(xAxis);
 };
 
+/*
+ We need to chain the transitions as we cannot have > 1 transition on the same object at a time.
+ Since updating both the X and Y positions transition the same elements, clicking too quickly will cancel the other.
+ Safer to move both vertically and horizontally each time.
+*/
+const updateScatterPlotDotAndLabelPositions = () => {
+	const dotsVerticalTransition = svg.selectAll('.dot').transition().duration(500).attr('cy', yMap);
+	dotsVerticalTransition.transition().duration(500).attr('cx', xMap);
+
+	const playerNamesVerticalTransition = svg.selectAll('.playerNames').transition().duration(500).attr('y', (d) => {
+		return yMap(d) - 10;
+	});
+
+	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
+		return xMap(d);
+	});
+};
+
 const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
+	// TODO: be able to toggle between shownPlayers and allPlayers
 	normalizeSelectedAttributes(shownPlayers, checkedAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
@@ -82,11 +101,7 @@ const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
 	};
 
 	updateYAxis();
-
-	svg.transition().selectAll('.dot').duration(1500).attr('cy', yMap);
-	svg.transition().selectAll('.playerNames').duration(1500).attr('y', (d) => {
-		return yMap(d) - 10;
-	});
+	updateScatterPlotDotAndLabelPositions();
 };
 
 const updateScatterPlotXValues = (playerCheckbox) => {
@@ -156,18 +171,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 	dot.exit().remove();
 
 	addOrRemoveDotLabels();
-
-	// We need to chain the transitions as we cannot have > 1 transition on the same object at a time
-	const dotsVerticalTransition = svg.selectAll('.dot').transition().duration(500).attr('cy', yMap);
-	dotsVerticalTransition.transition().duration(500).attr('cx', xMap);
-
-	const playerNamesVerticalTransition = svg.selectAll('.playerNames').transition().duration(500).attr('y', (d) => {
-		return yMap(d) - 10;
-	});
-
-	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
-		return xMap(d);
-	});
+	updateScatterPlotDotAndLabelPositions();
 };
 
 const updatePlot = () => {
