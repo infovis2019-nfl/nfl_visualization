@@ -1,23 +1,11 @@
 // TODO: Uncomment a value to create a checkbox for it
 const allowedAttributes = {
-	'qb': [
-		'Cmp%',
-		'Yds',
-		'TD',
-		'Rate',
-		'W'
-	],
-	'wr': [
-		'Rec',
-		'Yds',
-		'Y/R',
-		'TD',
-		'Y/G'
-	]
+	qb: [ 'Cmp%', 'Yds', 'TD', 'Rate', 'W' ],
+	wr: [ 'Rec', 'Yds', 'Y/R', 'TD', 'Y/G' ]
 };
 
 const getCheckedAttributes = () => {
-	const checkedAttributes = {'qb': [], 'wr': []};
+	const checkedAttributes = { qb: [], wr: [] };
 	d3.selectAll('.attrCheckboxQb').each(function(d) {
 		const cb = d3.select(this);
 		const checked = cb.property('checked');
@@ -39,7 +27,7 @@ const getCheckedAttributes = () => {
 
 const initializeAttributeCheckboxes = (data) => {
 	d3
-		.select('#attrCol')
+		.select('#attrColQb')
 		.selectAll('attributeInput')
 		.data(allowedAttributes['qb'])
 		.enter()

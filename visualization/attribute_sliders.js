@@ -1,40 +1,28 @@
 const sliderAttributes = {
-	'qb': [
-		'Cmp%',
-		'Yds',
-		'TD',
-		'Rate',
-		'W'
-	],
-	'wr': [
-		'Rec',
-		'Yds',
-		'Y/R',
-		'TD',
-		'Y/G'
-	]
+	qb: [ 'Cmp%', 'Yds', 'TD', 'Rate', 'W' ],
+	wr: [ 'Rec', 'Yds', 'Y/R', 'TD', 'Y/G' ]
 };
 
 const getSliderAttributes = () => {
-	const weights = {'qb': {}, 'wr': {}};
+	const weights = { qb: {}, wr: {} };
 	d3.selectAll('.weightSliderQb').each(function(d) {
 		const slider = d3.select(this);
 		const weight = slider.property('value');
 		const id = slider.property('id');
-		weights['qb'][id] = weight
+		weights['qb'][id] = weight;
 	});
 	d3.selectAll('.weightSliderWr').each(function(d) {
 		const slider = d3.select(this);
 		const weight = slider.property('value');
 		const id = slider.property('id');
-		weights['wr'][id] = weight
+		weights['wr'][id] = weight;
 	});
 	return weights;
 };
 
 const initializeAttributeSliders = (data) => {
 	d3
-		.select('#weightCol')
+		.select('#weightColQb')
 		.selectAll('attributeInput')
 		.data(sliderAttributes['qb'])
 		.enter()
@@ -49,13 +37,13 @@ const initializeAttributeSliders = (data) => {
 		.attr('type', 'range')
 		.attr('class', 'weightSliderQb')
 		.attr('min', '1')
-        .attr('max', '100')
+		.attr('max', '100')
 		.attr('id', function(d, i) {
 			return d;
 		})
 		.attr('onClick', 'updatePlot()');
-		
-		d3
+
+	d3
 		.select('#weightColWr')
 		.selectAll('attributeInput')
 		.data(sliderAttributes['wr'])
@@ -71,9 +59,9 @@ const initializeAttributeSliders = (data) => {
 		.attr('type', 'range')
 		.attr('class', 'weightSliderWr')
 		.attr('min', '1')
-        .attr('max', '100')
+		.attr('max', '100')
 		.attr('id', function(d, i) {
 			return d;
 		})
-        .attr('onClick', 'updatePlot()');
+		.attr('onClick', 'updatePlot()');
 };

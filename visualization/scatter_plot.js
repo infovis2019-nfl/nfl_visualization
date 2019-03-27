@@ -84,19 +84,19 @@ const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
 		let norm_value = 0;
-		let weight_total = 0
+		let weight_total = 0;
 		let posChecked = checkedAttributes[d.Pos];
 		let posSlider = sliderAttributes[d.Pos];
-		
+
 		for (var attr in posSlider) {
 			if (posChecked.includes(attr)) {
-				norm_value = parseFloat(d[attr + '-Normalized'])
-				weight_value = parseFloat(posSlider[attr]) / 100
-				weight_total += weight_value
-				combinedScore += (norm_value * weight_value);
+				norm_value = parseFloat(d[attr + '-Normalized']);
+				weight_value = parseFloat(posSlider[attr]) / 100;
+				weight_total += weight_value;
+				combinedScore += norm_value * weight_value;
 			}
 		}
-		combinedScore = combinedScore / weight_total
+		combinedScore = weight_total > 0 ? combinedScore / weight_total : 0;
 		return combinedScore;
 	};
 
@@ -106,7 +106,7 @@ const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
 
 const updateScatterPlotXValues = (playerCheckbox) => {
 	if (playerCheckbox.checked) {
-		let newPlayers
+		let newPlayers;
 		newPlayers = qbData.filter(function(player) {
 			return player.Player == playerCheckbox.id;
 		});
@@ -125,7 +125,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 	const dot = svg.selectAll('.dot').data(shownPlayers, function(d) {
 		return d.Player;
 	});
-	
+
 	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
 	updateYAxis();
 	updateXAxis();
@@ -178,22 +178,21 @@ const updatePlot = () => {
 	const checkedAttributes = getCheckedAttributes();
 	const sliderAttributes = getSliderAttributes();
 	updateScatterPlotYValues(checkedAttributes, sliderAttributes);
-}
+};
 
 let data, qbData, wrData;
 let shownPlayers = [];
 Promise.all([
 	d3.csv('http://localhost:3000/data/career_passing_stats_10'),
-	d3.csv('http://localhost:3000/data/career_receiving_stats_10'),
+	d3.csv('http://localhost:3000/data/career_receiving_stats_10')
 ]).then(function(data) {
 	qbData = data[0];
 	wrData = data[1];
-	
+
 	initializeAttributeCheckboxes(data);
 	initializeAttributeSliders(data);
 	loadPlayersFromData(qbData, '#playerCheckboxListQb');
 	loadPlayersFromData(wrData, '#playerCheckboxListWr');
-	
 
 	qbData.forEach(function(d) {
 		d.G = +d.G;
