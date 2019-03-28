@@ -1,65 +1,119 @@
-const generatePieChart = (sliderAttributes, d) => {
-	const w = 450;
-	const h = 450;
-	const margin = 10;
+const generatePieChart = (d, checkedAttributes) => {
+	const width = 400,
+		height = 400,
+		radius = Math.min(width, height) / 6 - 10,
+		color = d3.scaleOrdinal(d3.schemeCategory10),
+		donut = d3.pie(),
+		arc = d3.arc().innerRadius(0).outerRadius(radius);
 
-	const radius = Math.min(width, height) / 4 - margin;
+	const cValue = function(d) {
+		let stat = d.data.name;
+		return stat.substring(0, stat.indexOf('-Normalized'));
+	};
 
-	const pieChartData = {};
-	for (var attr in sliderAttributes) {
-		attr_label = attr + '-Normalized'
-		norm_value = parseFloat(d[attr_label])
-		weight = parseFloat(sliderAttributes[attr]) / 100
-		pieChartData[attr_label] = norm_value * weight;
-	}
-
-	const pieSVG = d3
-		.select('#tipDiv')
-		.append('svg')
-		.attr('width', w)
-		.attr('height', h)
-		.append('g')
-		.attr('transform', 'translate(' + width / 4 + ',' + height / 4 + ')');
-
-	// TODO: Change the colors of the pie chart
-	const color = d3
-		.scaleOrdinal()
-		.domain(pieChartData)
-		.range([ '#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56' ]);
-
-	const pie = d3.pie().value(function(d) {
-		return d.value;
+	const pieChartData = [];
+	checkedAttributes.forEach((attr) => {
+		pieChartData[attr + '-Normalized'] = d[attr + '-Normalized'];
+		pieChartData.push({
+			name: attr + '-Normalized',
+			val: d[attr + '-Normalized']
+		});
 	});
-	const pieChartProportions = pie(d3.entries(pieChartData));
+	// const pieChartData = {};
+	// for (var attr in sliderAttributes) {
+	// 	attr_label = attr + '-Normalized'
+	// 	norm_value = parseFloat(d[attr_label])
+	// 	weight = parseFloat(sliderAttributes[attr]) / 100
+	// 	pieChartData[attr_label] = norm_value * weight;
+	// }
 
-	const arcGenerator = d3.arc().innerRadius(0).outerRadius(radius);
+	if (shouldDisplayPieChart(d, checkedAttributes)) {
+		const pieSVG = d3
+			.select('#tipDiv')
+			.append('svg')
+			.data([ pieChartData ])
+			.attr('width', width + 150)
+			.attr('height', height);
 
-	pieSVG
-		.selectAll('slices')
-		.data(pieChartProportions)
-		.enter()
-		.append('path')
-		.attr('d', arcGenerator)
-		.attr('fill', function(d) {
-			return color(d.data.key);
-		})
-		.attr('stroke', 'black')
-		.style('stroke-width', '2px')
-		.style('opacity', 0.7);
+		const arcs = pieSVG
+			.selectAll('arc')
+			.data(
+				donut.value(function(d) {
+					return d.val;
+				})
+			)
+			.enter()
+			.append('g')
+			.attr('class', 'arc')
+			.attr('transform', 'translate(' + width / 4 + ',' + height / 4 + ')');
 
-	pieSVG
-		.selectAll('slices')
-		.data(pieChartProportions)
-		.enter()
-		.append('text')
-		.text(function(d) {
-			let attribute = d.data.key;
-			attribute = attribute.substring(0, attribute.indexOf('-Normalized'));
-			return attribute + ': ' + d.data.value.toFixed(2);
-		})
-		.attr('transform', function(d) {
-			return 'translate(' + arcGenerator.centroid(d) + ')';
-		})
-		.style('text-anchor', 'middle')
-		.style('font-size', 15);
+		arcs
+			.append('path')
+			.attr('fill', function(d, i) {
+				return color(cValue(d));
+			})
+			.attr('d', arc);
+
+		arcs
+			.append('text')
+			.attr('text-anchor', 'middle')
+			.attr('x', function(d) {
+				const a = d.startAngle + (d.endAngle - d.startAngle) / 2 - Math.PI / 2;
+				d.cx = Math.cos(a) * (radius - 45);
+				return (d.x = Math.cos(a) * (radius + 30));
+			})
+			.attr('y', function(d) {
+				const a = d.startAngle + (d.endAngle - d.startAngle) / 2 - Math.PI / 2;
+				d.cy = Math.sin(a) * (radius - 45);
+				return (d.y = Math.sin(a) * (radius + 30));
+			})
+			.text(function(d) {
+				return d.value > 0 ? d.value.toFixed(2) : '';
+			})
+			.each(function(d) {
+				const bbox = this.getBBox();
+				d.sx = d.x - bbox.width / 2 - 2;
+				d.ox = d.x + bbox.width / 2 + 2;
+				d.sy = d.oy = d.y + 5;
+			});
+
+		arcs
+			.append('path')
+			.attr('class', 'pointer')
+			.style('fill', 'none')
+			.style('stroke', 'black')
+			.attr('d', function(d) {
+				if (d.data.val > 0) {
+					if (d.cx > d.ox) {
+						return 'M' + d.sx + ',' + d.sy + 'L' + d.ox + ',' + d.oy + ' ' + d.cx + ',' + d.cy;
+					} else {
+						return 'M' + d.ox + ',' + d.oy + 'L' + d.sx + ',' + d.sy + ' ' + d.cx + ',' + d.cy;
+					}
+				}
+			});
+
+		const legend = pieSVG
+			.selectAll('.legend')
+			.data(color.domain())
+			.enter()
+			.append('g')
+			.attr('class', 'legend')
+			.attr('transform', function(d, i) {
+				return 'translate(0,' + i * 20 + ')';
+			});
+
+		// draw legend colored rectangles
+		legend.append('rect').attr('x', width - 90).attr('width', 18).attr('height', 18).style('fill', color);
+
+		// draw legend text
+		legend
+			.append('text')
+			.attr('x', width - 96)
+			.attr('y', 9)
+			.attr('dy', '.35em')
+			.style('text-anchor', 'end')
+			.text(function(d) {
+				return d;
+			});
+	}
 };

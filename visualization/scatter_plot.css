@@ -19,9 +19,12 @@ stroke: #000;
 
 .tooltip {
 position: absolute;
-width: 200px;
-height: 28px;
+width: 400px;
+height: 300px;
+background: white;
+border: 1px solid black;
 pointer-events: none;
+opacity: 1;
 }
 
 .playerNames {
@@ -36,7 +39,7 @@ pointer-events: none;
     cursor: pointer;
 }
 
-#playerCheckboxList {
+#playerCheckboxListQb, #playerCheckboxListWr  {
     width: 50%;
     height: 300px;
     overflow-y: scroll;
