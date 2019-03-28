@@ -123,8 +123,10 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 			tooltip.transition().duration(200).style('opacity', 0.9);
 			tooltip
 				.html(generateTooltipHtml(d, sliderAttributes))
-				.style('left', d3.event.pageX - 140 + 'px')
-				.style('top', d3.event.pageY - 40 + 'px');
+				.style('left', 1400 + 'px')
+				.style('top', 100 + 'px');
+				//.style('left', d3.event.pageX - 140 + 'px')
+				//.style('top', d3.event.pageY - 40 + 'px');
 
 			generatePieChart(sliderAttributes, d);
 		})
