@@ -59,6 +59,25 @@ const updateXAxis = () => {
 	svg.select('.x-axis').call(xAxis);
 };
 
+const addOrRemoveProjectionLines = () => {
+	const projectionLines = svg.selectAll('.projectionLine').data(shownPlayers, function(d) {
+		return d.Player;
+	});
+
+	projectionLines
+		.enter()
+		.append('line')
+		.attr('class', 'projectionLine')
+		.attr('x1', xScale(0))
+		.attr('y1', yScale(0))
+		.attr('x2', xMap)
+		.attr('y2', yMap)
+		.style('stroke', 'black')
+		.style('opacity', 0);
+
+	projectionLines.exit().remove();
+};
+
 /*
  We need to chain the transitions as we cannot have > 1 transition on the same object at a time.
  Since updating both the X and Y positions transition the same elements, clicking too quickly will cancel the other.
@@ -75,6 +94,9 @@ const updateScatterPlotDotAndLabelPositions = () => {
 	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
 		return xMap(d);
 	});
+
+	const projectionLinesTransition = svg.selectAll('.projectionLine').transition().duration(500).attr('y2', yMap);
+	projectionLinesTransition.transition().duration(500).attr('x2', xMap);
 };
 
 const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
@@ -152,6 +174,10 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 				.style('left', d3.event.pageX + 70 + 'px')
 				.style('top', d3.event.pageY - 40 + 'px');
 
+			svg.selectAll('.projectionLine').style('opacity', function(data) {
+				return d.Player == data.Player ? 1 : 0;
+			});
+
 			generatePieChart(d, checkedAttributes);
 		})
 		.on('click', function(d) {
@@ -166,12 +192,15 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		})
 		.on('mouseout', function(d) {
 			tooltip.transition().duration(500).style('opacity', 0);
+
+			svg.selectAll('.projectionLine').style('opacity', 0);
 		});
 
 	dot.exit().remove();
 
 	addOrRemoveDotLabels();
 	updateScatterPlotDotAndLabelPositions();
+	addOrRemoveProjectionLines();
 };
 
 const updatePlot = () => {
