@@ -56,10 +56,27 @@ const updateYAxis = () => {
 const updateXAxis = () => {
 	if (shownPlayers.length == 0) return;
 
-	//TODO: If we don't start at x=0, will need to re-calculate slope
+	//TODO: If we want to dynamically change the min value of the x-axis
 	// xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
 	xScale.domain([ 0, d3.max(shownPlayers, xValue) + 20 ]);
 	svg.select('.x-axis').call(xAxis);
+};
+
+const slope = (d) => {
+	const rise = yValue(d);
+	const run = d.G;
+	return rise / run;
+};
+
+const calculateProjectedStartXValue = () => {
+	const xMin = xScale.domain()[0];
+	return xScale(xMin);
+};
+
+const calculateProjectedStartYValue = (d) => {
+	const xMin = xScale.domain()[0];
+	const projectedStart = xMin * slope(d);
+	return yScale(projectedStart);
 };
 
 const calculateProjectedFinishXValue = () => {
@@ -69,10 +86,7 @@ const calculateProjectedFinishXValue = () => {
 
 const calculateProjectedFinishYValue = (d) => {
 	const xMax = xScale.domain()[1];
-	const rise = yValue(d);
-	const run = d.G;
-	const slope = rise / run;
-	const projectedFinish = xMax * slope;
+	const projectedFinish = xMax * slope(d);
 	return yScale(projectedFinish);
 };
 
@@ -85,8 +99,8 @@ const addOrRemoveProjectionLines = () => {
 		.enter()
 		.append('line')
 		.attr('class', 'projectionLine')
-		.attr('x1', xScale(0))
-		.attr('y1', yScale(0))
+		.attr('x1', calculateProjectedStartXValue())
+		.attr('y1', (d) => calculateProjectedStartYValue(d))
 		.attr('x2', calculateProjectedFinishXValue())
 		.attr('y2', (d) => calculateProjectedFinishYValue(d))
 		.style('stroke', 'black')
@@ -114,6 +128,8 @@ const updateScatterPlotDotAndLabelPositions = () => {
 
 	svg
 		.selectAll('.projectionLine')
+		.attr('x1', calculateProjectedStartXValue())
+		.attr('y1', (d) => calculateProjectedStartYValue(d))
 		.attr('x2', calculateProjectedFinishXValue())
 		.attr('y2', (d) => calculateProjectedFinishYValue(d));
 };
