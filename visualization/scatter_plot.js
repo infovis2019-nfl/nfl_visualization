@@ -55,8 +55,25 @@ const updateYAxis = () => {
 
 const updateXAxis = () => {
 	if (shownPlayers.length == 0) return;
-	xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
+
+	//TODO: If we don't start at x=0, will need to re-calculate slope
+	// xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
+	xScale.domain([ 0, d3.max(shownPlayers, xValue) + 20 ]);
 	svg.select('.x-axis').call(xAxis);
+};
+
+const calculateProjectedFinishXValue = () => {
+	const xMax = xScale.domain()[1];
+	return xScale(xMax);
+};
+
+const calculateProjectedFinishYValue = (d) => {
+	const xMax = xScale.domain()[1];
+	const rise = yValue(d);
+	const run = d.G;
+	const slope = rise / run;
+	const projectedFinish = xMax * slope;
+	return yScale(projectedFinish);
 };
 
 const addOrRemoveProjectionLines = () => {
@@ -70,8 +87,8 @@ const addOrRemoveProjectionLines = () => {
 		.attr('class', 'projectionLine')
 		.attr('x1', xScale(0))
 		.attr('y1', yScale(0))
-		.attr('x2', xMap)
-		.attr('y2', yMap)
+		.attr('x2', calculateProjectedFinishXValue())
+		.attr('y2', (d) => calculateProjectedFinishYValue(d))
 		.style('stroke', 'black')
 		.style('opacity', 0);
 
@@ -95,8 +112,10 @@ const updateScatterPlotDotAndLabelPositions = () => {
 		return xMap(d);
 	});
 
-	const projectionLinesTransition = svg.selectAll('.projectionLine').transition().duration(500).attr('y2', yMap);
-	projectionLinesTransition.transition().duration(500).attr('x2', xMap);
+	svg
+		.selectAll('.projectionLine')
+		.attr('x2', calculateProjectedFinishXValue())
+		.attr('y2', (d) => calculateProjectedFinishYValue(d));
 };
 
 const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
@@ -199,8 +218,8 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 	dot.exit().remove();
 
 	addOrRemoveDotLabels();
-	updateScatterPlotDotAndLabelPositions();
 	addOrRemoveProjectionLines();
+	updateScatterPlotDotAndLabelPositions();
 };
 
 const updatePlot = () => {
