@@ -16,22 +16,36 @@
         <div id="visualization">
             
         </div>
-        <div id='qbRow' class="row">
-            <div class="col-md-3" id='attrColQb'><h3>Stats</h3></div>
-            <div class="col-md-3" id='weightColQb'><h3>Weights</h3></div>
-            <div class="col-md-6" id='playerColQb'>
-                <h3>Players</h3>
-                <div id="playerCheckboxListQb"></div>
+        <div class="tabbable">
+            <ul class="nav">
+                <li class="active" ><a class="qbtab" href="#qb_tab" data-toggle="tab">QB</a></li>
+                <li class=""><a class="WRtab" href="#WR_tab" data-toggle="tab">WR</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="qb_tab">
+                    <div id='qbRow' class="row">
+                        <div class="col-md-3" id='attrColQb'><h3>Stats</h3></div>
+                        <div class="col-md-3" id='weightColQb'><h3>Weights</h3></div>
+                        <div class="col-md-6" id='playerColQb'>
+                            <h3>Quarterbacks</h3>
+                            <div id="playerCheckboxListQb"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="wr_tab">
+                    <div id='wrRow' class="row">
+                        <div class="col-md-3" id='attrColWr'><h3>Stats</h3></div>
+                        <div class="col-md-3" id='weightColWr'><h3>Weights</h3></div>
+                        <div class="col-md-6" id='playerColWr'>
+                            <h3>Wide Receivers</h3>
+                            <div id="playerCheckboxListWr"></div>
+                        </div>
+                    </div>
+                 </div>   
             </div>
-        </div>
-        <div id='wrRow' class="row">
-            <div class="col-md-3" id='attrColWr'></div>
-            <div class="col-md-3" id='weightColWr'></div>
-            <div class="col-md-6" id='playerColWr'>
-                <div id="playerCheckboxListWr"></div>
-            </div>
-        </div>
+        </div>    
         <script src="normalize.js"></script>
+        <script src="tabs.js"></script>
         <script src="attribute_checkboxes.js"></script>
         <script src="attribute_sliders.js"></script>
         <script src="player_checkboxes.js"></script>
