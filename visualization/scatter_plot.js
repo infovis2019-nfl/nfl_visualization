@@ -55,8 +55,58 @@ const updateYAxis = () => {
 
 const updateXAxis = () => {
 	if (shownPlayers.length == 0) return;
-	xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
+
+	//TODO: If we want to dynamically change the min value of the x-axis
+	// xScale.domain([ d3.min(shownPlayers, xValue) - 10, d3.max(shownPlayers, xValue) + 20 ]);
+	xScale.domain([ 0, d3.max(shownPlayers, xValue) + 20 ]);
 	svg.select('.x-axis').call(xAxis);
+};
+
+const slope = (d) => {
+	const rise = yValue(d);
+	const run = d.G;
+	return rise / run;
+};
+
+const calculateProjectedStartXValue = () => {
+	const xMin = xScale.domain()[0];
+	return xScale(xMin);
+};
+
+const calculateProjectedStartYValue = (d) => {
+	const xMin = xScale.domain()[0];
+	const projectedStart = xMin * slope(d);
+	return yScale(projectedStart);
+};
+
+const calculateProjectedFinishXValue = () => {
+	const xMax = xScale.domain()[1];
+	return xScale(xMax);
+};
+
+const calculateProjectedFinishYValue = (d) => {
+	const xMax = xScale.domain()[1];
+	const projectedFinish = xMax * slope(d);
+	return yScale(projectedFinish);
+};
+
+const addOrRemoveProjectionLines = () => {
+	const projectionLines = svg.selectAll('.projectionLine').data(shownPlayers, function(d) {
+		return d.Player;
+	});
+
+	projectionLines
+		.enter()
+		.append('line')
+		.attr('class', 'projectionLine')
+		.attr('x1', calculateProjectedStartXValue())
+		.attr('y1', (d) => calculateProjectedStartYValue(d))
+		.attr('x2', calculateProjectedFinishXValue())
+		.attr('y2', (d) => calculateProjectedFinishYValue(d))
+		.style('stroke', 'black')
+		.style('opacity', 0);
+
+	projectionLines.exit().remove();
 };
 
 /*
@@ -75,6 +125,13 @@ const updateScatterPlotDotAndLabelPositions = () => {
 	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
 		return xMap(d);
 	});
+
+	svg
+		.selectAll('.projectionLine')
+		.attr('x1', calculateProjectedStartXValue())
+		.attr('y1', (d) => calculateProjectedStartYValue(d))
+		.attr('x2', calculateProjectedFinishXValue())
+		.attr('y2', (d) => calculateProjectedFinishYValue(d));
 };
 
 const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
@@ -152,6 +209,10 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 				.style('left', d3.event.pageX + 70 + 'px')
 				.style('top', d3.event.pageY - 40 + 'px');
 
+			svg.selectAll('.projectionLine').style('opacity', function(data) {
+				return d.Player == data.Player ? 1 : 0;
+			});
+
 			generatePieChart(d, checkedAttributes);
 		})
 		.on('click', function(d) {
@@ -166,11 +227,14 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		})
 		.on('mouseout', function(d) {
 			tooltip.transition().duration(500).style('opacity', 0);
+
+			svg.selectAll('.projectionLine').style('opacity', 0);
 		});
 
 	dot.exit().remove();
 
 	addOrRemoveDotLabels();
+	addOrRemoveProjectionLines();
 	updateScatterPlotDotAndLabelPositions();
 };
 
