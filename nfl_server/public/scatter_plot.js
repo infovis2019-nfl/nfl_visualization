@@ -172,6 +172,11 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 				return player.Player == playerCheckbox.id;
 			});
 		}
+		if (newPlayers.length == 0) {
+			newPlayers = rbData.filter(function(player) {
+				return player.Player == playerCheckbox.id;
+			});
+		}
 		shownPlayers.push(newPlayers[0]);
 	} else {
 		shownPlayers = shownPlayers.filter(function(player) {
@@ -244,25 +249,33 @@ const updatePlot = () => {
 	updateScatterPlotYValues(checkedAttributes, sliderAttributes);
 };
 
-let data, qbData, wrData;
+let data, qbData, wrData, rbData;
 let shownPlayers = [];
 Promise.all([
 	d3.csv('http://localhost:3000/data/career_passing_stats_10'),
-	d3.csv('http://localhost:3000/data/career_receiving_stats_10')
+	d3.csv('http://localhost:3000/data/career_receiving_stats_10'),
+	d3.csv('http://localhost:3000/data/career_rushing_stats_10')
 ]).then(function(data) {
 	qbData = data[0];
 	wrData = data[1];
+	rbData = data[2];
 
 	initializeAttributeCheckboxes(data);
 	initializeAttributeSliders(data);
 	loadPlayersFromData(qbData, '#playerCheckboxListQb');
 	loadPlayersFromData(wrData, '#playerCheckboxListWr');
+	loadPlayersFromData(rbData, '#playerCheckboxListRb');
+
 
 	qbData.forEach(function(d) {
 		d.G = +d.G;
 	});
 
 	wrData.forEach(function(d) {
+		d.G = +d.G;
+	});
+
+	rbData.forEach(function(d) {
 		d.G = +d.G;
 	});
 
