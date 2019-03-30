@@ -9,5 +9,5 @@
 
 ## Opening a visualization
 
-The visualizations within the `visualization` folder expect csv files to be served from the Express server.
-They expect the Express server to be running on Port: `3000`, which will be its default if you have not setup an environment variable.
+The entire visualization is now being served from the Express server.
+You can find a locally running instance of the server at `localhost:3000`
