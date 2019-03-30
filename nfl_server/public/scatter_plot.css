@@ -39,7 +39,7 @@ opacity: 1;
     cursor: pointer;
 }
 
-#playerCheckboxListQb, #playerCheckboxListWr  {
+#playerCheckboxListQb, #playerCheckboxListWr, #playerCheckboxListRb  {
     width: 50%;
     height: 300px;
     overflow-y: scroll;
