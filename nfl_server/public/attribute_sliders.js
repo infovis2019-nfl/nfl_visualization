@@ -1,7 +1,7 @@
 const sliderAttributes = {
-	qb: [ 'Cmp%', 'Yds', 'TD', 'Rate', 'W' ],
-	wr: [ 'Rec', 'Yds', 'Y/R', 'TD', 'Y/G' ],
-	rb: ['Att', 'Yds', 'Y/A', 'TD', 'Y/G']
+	qb: [ 'Completion %', 'Yards', 'TD', 'QB Rating', 'Wins' ],
+	wr: [ 'Receptions', 'Yards', 'Yards/Reception', 'TD', 'Yards/Game' ],
+	rb: ['Attempts', 'Yards', 'Yards/Attempt', 'TD', 'Yards/Game']
 };
 
 const getSliderAttributes = () => {
