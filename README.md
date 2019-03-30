@@ -1,5 +1,7 @@
 # NFL Visualization
 
+Live Application: [NFL Visualization](https://nflvis2019.herokuapp.com/)
+
 Dataset: [NFL Dataset](https://www.kaggle.com/kendallgillies/nflstatistics)
 
 ## matcher.py - Match rows containing a value and output them to a file
@@ -56,6 +58,12 @@ positional arguments:
 ```
 
 Example: `python3 normalize_passing.py career_passing_stats.csv career_passing_stats_normalized.csv`
+
+## Deploying to Heroku
+
+Heroku expects the node application to be at the root of the project, thus we need to use `git subtree` to make `nfl_server` our root.
+
+Command: `git subtree push --prefix nfl_server heroku master`
 
 ## TODO:
 
