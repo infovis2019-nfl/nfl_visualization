@@ -246,9 +246,10 @@ const updatePlot = () => {
 
 let data, qbData, wrData;
 let shownPlayers = [];
-Promise.all([ d3.csv('/data/career_passing_stats_10'), d3.csv('/data/career_receiving_stats_10') ]).then(function(
-	data
-) {
+Promise.all([
+	d3.csv('http://localhost:3000/data/career_passing_stats_10'),
+	d3.csv('http://localhost:3000/data/career_receiving_stats_10')
+]).then(function(data) {
 	qbData = data[0];
 	wrData = data[1];
 

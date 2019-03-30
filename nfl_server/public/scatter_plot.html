@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>NFL Scatter Plot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="scatter_plot.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="checkboxes.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>NFL Stats</h1>
+        <div id="visualization">
+            
+        </div>
+        <div id='qbRow' class="row">
+            <div class="col-md-3" id='attrColQb'><h3>Stats</h3></div>
+            <div class="col-md-3" id='weightColQb'><h3>Weights</h3></div>
+            <div class="col-md-6" id='playerColQb'>
+                <h3>Players</h3>
+                <div id="playerCheckboxListQb"></div>
+            </div>
+        </div>
+        <div id='wrRow' class="row">
+            <div class="col-md-3" id='attrColWr'></div>
+            <div class="col-md-3" id='weightColWr'></div>
+            <div class="col-md-6" id='playerColWr'>
+                <div id="playerCheckboxListWr"></div>
+            </div>
+        </div>
+        <script src="normalize.js"></script>
+        <script src="attribute_checkboxes.js"></script>
+        <script src="attribute_sliders.js"></script>
+        <script src="player_checkboxes.js"></script>
+        <script src="pie_chart.js"></script>
+        <script src="tooltip.js"></script>
+        <script src="scatter_plot_dot_labels.js"></script>
+        <script src="scatter_plot.js"></script>
+    </div>
+</body>
+</html>
