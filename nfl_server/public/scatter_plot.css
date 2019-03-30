@@ -31,7 +31,7 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    ovreflow: hidden;
+    overflow: hidden;
     background-color: #333;
 }
 
@@ -51,6 +51,10 @@ li a:hover {
     background-color: #f0f0f5;
 }
 
+#attrColQb, #attrColWr, #attrColRb, #weightColQb, #weightColWr, #weightColRb {
+    text-align: right;
+}
+
 .playerNames {
     -webkit-user-select: none; /* Safari */        
     -moz-user-select: none; /* Firefox */
@@ -59,13 +63,14 @@ li a:hover {
     pointer-events: none;
 }
 
-.playerCheckbox {
+.playerCheckbox, .attrCheckboxQb, .attrCheckboxWr, .attrCheckboxRb, .weightSliderQb, .weightSliderWr, .weightSliderRb {
+    margin-left: 10px;
     cursor: pointer;
 }
 
-#playerCheckboxListQb, #playerCheckboxListWr  {
-    width: 50%;
-    height: 300px;
+#playerCheckboxListQb, #playerCheckboxListWr, #playerCheckboxListRb  {
+    width: 60%;
+    height: 200px;
     overflow-y: scroll;
     margin: 0 auto;
 }
@@ -76,7 +81,7 @@ li a:hover {
 
 .playerCheckboxLabel {
     margin-bottom: 0px;
-    text-align: left;
+    text-align: right;
 }
 
 .playerCheckboxLabel:nth-child(even) {
