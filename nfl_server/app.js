@@ -7,9 +7,6 @@ app.use(cors());
 
 app.use(express.static(__dirname + '/public'));
 
-// app.get('/', function(req, res) {
-// 	res.send('Hit the home page of the server');
-// });
 app.get('/', function(req, res) {
 	res.sendFile(path.join(__dirname + '/public/scatter_plot.html'));
 });
