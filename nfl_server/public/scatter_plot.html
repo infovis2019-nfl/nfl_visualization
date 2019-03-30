@@ -17,37 +17,37 @@
             
         </div>
         <div class="tabbable">
-            <ul class="nav">
-                <li class="active" ><a class="qbtab" href="#qb_tab" data-toggle="tab">QB</a></li>
-                <li class=""><a class="WRtab" href="#WR_tab" data-toggle="tab">WR</a></li>
-                <li class=""><a class="RBtab" href="#RB_tab" data-toggle="tab">RB</a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="qb_tab">
-                    <div id='qbRow' class="row">
-                        <div class="col-md-3" id='attrColQb'><h3>Stats</h3></div>
-                        <div class="col-md-4" id='weightColQb'><h3>Weights</h3></div>
-                        <div class="col-md-5" id='playerColQb'>
+            <div class="tab">
+                <button class="tabLinks" onclick="switchPosition(event, 'qbTab')" id="defaultOpen">QB</button>
+                <button class="tabLinks" onclick="switchPosition(event, 'wrTab')">WR</button>
+                <button class="tabLinks" onclick="switchPosition(event, 'rbTab')">RB</button>
+            </div>
+            <div>
+                <div class="tabPane" id="qbTab">
+                    <div id="qbRow" class="row">
+                        <div class="col-md-3" id="attrColQb"><h3>Stats</h3></div>
+                        <div class="col-md-4" id="weightColQb"><h3>Weights</h3></div>
+                        <div class="col-md-5" id="playerColQb">
                             <h3>Quarterbacks</h3>
                             <div id="playerCheckboxListQb"></div>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="wr_tab">
-                    <div id='wrRow' class="row">
-                        <div class="col-md-3" id='attrColWr'><h3>Stats</h3></div>
-                        <div class="col-md-4" id='weightColWr'><h3>Weights</h3></div>
-                        <div class="col-md-5" id='playerColWr'>
+                <div class="tabPane" id="wrTab">
+                    <div id="wrRow" class="row">
+                        <div class="col-md-3" id="attrColWr"><h3>Stats</h3></div>
+                        <div class="col-md-4" id="weightColWr"><h3>Weights</h3></div>
+                        <div class="col-md-5" id="playerColWr">
                             <h3>Wide Receivers</h3>
                             <div id="playerCheckboxListWr"></div>
                         </div>
                     </div>
                  </div>
-                 <div class="tab-pane" id="rb_tab">
-                    <div id='rbRow' class="row">
-                        <div class="col-md-3" id='attrColRb'><h3>Stats</h3></div>
-                        <div class="col-md-4" id='weightColRb'><h3>Weights</h3></div>
-                        <div class="col-md-5" id='playerColRb'>
+                 <div class="tabPane" id="rbTab">
+                    <div id="rbRow" class="row">
+                        <div class="col-md-3" id="attrColRb"><h3>Stats</h3></div>
+                        <div class="col-md-4" id="weightColRb"><h3>Weights</h3></div>
+                        <div class="col-md-5" id="playerColRb">
                             <h3>Running Backs</h3>
                             <div id="playerCheckboxListRb"></div>
                         </div>
@@ -64,6 +64,10 @@
         <script src="tooltip.js"></script>
         <script src="scatter_plot_dot_labels.js"></script>
         <script src="scatter_plot.js"></script>
+        <script>
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+        </script>
     </div>
 </body>
 </html>

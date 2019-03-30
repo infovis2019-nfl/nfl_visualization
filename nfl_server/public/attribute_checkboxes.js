@@ -1,4 +1,3 @@
-// TODO: Uncomment a value to create a checkbox for it
 const allowedAttributes = {
 	qb: [ 'Completion %', 'Yards', 'TD', 'QB Rating', 'Wins' ],
 	wr: [ 'Receptions', 'Yards', 'Yards/Reception', 'TD', 'Yards/Game' ],

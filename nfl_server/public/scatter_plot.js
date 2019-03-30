@@ -125,7 +125,6 @@ const updateScatterPlotDotAndLabelPositions = () => {
 	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
 		return xMap(d);
 	})
-		.transition().duration(3000).style('opacity, 0');
 
 	svg
 		.selectAll('.projectionLine')
