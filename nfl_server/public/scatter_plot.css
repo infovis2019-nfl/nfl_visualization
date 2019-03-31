@@ -128,8 +128,13 @@ li a:hover {
 .playerCheckboxLabel {
     margin-bottom: 0px;
     text-align: right;
+    cursor: pointer;
 }
 
 .playerCheckboxLabel:nth-child(even) {
     background: gray;
+}
+
+.pointer {
+    cursor: pointer;
 }

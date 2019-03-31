@@ -17,7 +17,7 @@ const loadPlayersFromData = (data, label) => {
 		players.push(player.Player);
 	});
 	setPlayerCheckboxes(players, label);
-}
+};
 
 const setPlayerCheckboxes = (players, label) => {
 	d3
