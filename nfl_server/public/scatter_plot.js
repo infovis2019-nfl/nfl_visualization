@@ -313,4 +313,39 @@ Promise.all([
 		.attr('dy', '1em')
 		.style('text-anchor', 'middle')
 		.text('Combined Score');
+
+	// Get the colors working for the legend
+	color('qb');
+	color('wr');
+	color('rb');
+
+	const legend = svg
+		.selectAll('.legend')
+		.data(color.domain())
+		.enter()
+		.append('g')
+		.attr('class', 'legend')
+		.attr('transform', function(d, i) {
+			return 'translate(0,' + i * 20 + ')';
+		});
+
+	// draw legend colored rectangles
+	legend.append('rect').attr('x', width - 90).attr('width', 18).attr('height', 18).style('fill', color);
+
+	// draw legend text
+	legend
+		.append('text')
+		.attr('x', width - 96)
+		.attr('y', 9)
+		.attr('dy', '.35em')
+		.style('text-anchor', 'end')
+		.text(function(d) {
+			if (d == 'qb') {
+				return 'Quarterback';
+			} else if (d == 'wr') {
+				return 'Wide Receiver';
+			} else {
+				return 'Running Back';
+			}
+		});
 });
