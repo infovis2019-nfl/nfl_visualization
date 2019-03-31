@@ -16,34 +16,55 @@
         <div id="visualization">
             
         </div>
-        <div id='qbRow' class="row">
-            <div class="col-md-3" id='attrColQb'><h3>Stats</h3></div>
-            <div class="col-md-4" id='weightColQb'><h3>Weights</h3></div>
-            <div class="col-md-5" id='playerColQb'>
-                <h3>Players</h3>
-                <div id="playerCheckboxListQb"></div>
+        <div class="tabbable">
+            <div class="tab">
+                <button class="tabLinks" onclick="switchPosition(event, 'qbTab')" id="defaultOpen">QB</button>
+                <button class="tabLinks" onclick="switchPosition(event, 'wrTab')">WR</button>
+                <button class="tabLinks" onclick="switchPosition(event, 'rbTab')">RB</button>
+                <button class="tabLinks" onclick="switchPosition(event, 'optionsTab')">Options</button>
             </div>
-        </div>
-        <div id='wrRow' class="row">
-            <div class="col-md-3" id='attrColWr'></div>
-            <div class="col-md-4" id='weightColWr'></div>
-            <div class="col-md-5" id='playerColWr'>
-                <div id="playerCheckboxListWr"></div>
+            <div>
+                <div class="tabPane" id="qbTab">
+                    <div id="qbRow" class="row">
+                        <div class="col-md-3" id="attrColQb"><h3>Stats</h3></div>
+                        <div class="col-md-4" id="weightColQb"><h3>Weights</h3></div>
+                        <div class="col-md-5" id="playerColQb">
+                            <h3>Quarterbacks</h3>
+                            <div id="playerCheckboxListQb"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabPane" id="wrTab">
+                    <div id="wrRow" class="row">
+                        <div class="col-md-3" id="attrColWr"><h3>Stats</h3></div>
+                        <div class="col-md-4" id="weightColWr"><h3>Weights</h3></div>
+                        <div class="col-md-5" id="playerColWr">
+                            <h3>Wide Receivers</h3>
+                            <div id="playerCheckboxListWr"></div>
+                        </div>
+                    </div>
+                 </div>
+                 <div class="tabPane" id="rbTab">
+                    <div id="rbRow" class="row">
+                        <div class="col-md-3" id="attrColRb"><h3>Stats</h3></div>
+                        <div class="col-md-4" id="weightColRb"><h3>Weights</h3></div>
+                        <div class="col-md-5" id="playerColRb">
+                            <h3>Running Backs</h3>
+                            <div id="playerCheckboxListRb"></div>
+                        </div>
+                    </div>
+                 </div>
+                 <div class="tabPane" id="optionsTab">
+                        <div id="options" class="options">
+                            <label for="toggleLabels"></label>
+                            Scatter Plot Labels:
+                            <input type="checkbox" checked id='toggleLabelCheckbox'>
+                        </div>
+                 </div>
             </div>
-        </div>
-        <div id='rbRow' class="row">
-            <div class="col-md-3" id='attrColRb'></div>
-            <div class="col-md-4" id='weightColRb'></div>
-            <div class="col-md-5" id='playerColRb'>
-                <div id="playerCheckboxListRb"></div>
-            </div>
-        </div>
-        <div id="options" class="options">
-            <label for="toggleLabels"></label>
-            Scatter Plot Labels:
-            <input type="checkbox" checked id='toggleLabelCheckbox'>
         </div>
         <script src="normalize.js"></script>
+        <script src="tabs.js"></script>
         <script src="attribute_checkboxes.js"></script>
         <script src="attribute_sliders.js"></script>
         <script src="player_checkboxes.js"></script>
@@ -52,6 +73,10 @@
         <script src="scatter_plot_dot_labels.js"></script>
         <script src="options.js"></script>
         <script src="scatter_plot.js"></script>
+        <script>
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+        </script>
     </div>
 </body>
 </html>
