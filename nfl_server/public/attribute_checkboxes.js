@@ -1,7 +1,7 @@
 const allowedAttributes = {
 	qb: [ 'Completion %', 'Yards', 'TD', 'QB Rating', 'Wins' ],
 	wr: [ 'Receptions', 'Yards', 'Yards/Reception', 'TD', 'Yards/Game' ],
-	rb: ['Attempts', 'Yards', 'Yards/Attempt', 'TD', 'Yards/Game']
+	rb: [ 'Attempts', 'Yards', 'Yards/Attempt', 'TD', 'Yards/Game' ]
 };
 
 const getCheckedAttributes = () => {
@@ -11,7 +11,7 @@ const getCheckedAttributes = () => {
 		const checked = cb.property('checked');
 		const id = cb.property('id');
 		if (checked) {
-			checkedAttributes['qb'].push(id);
+			checkedAttributes['qb'].push(id.substring(0, id.indexOf('Qb')));
 		}
 	});
 	d3.selectAll('.attrCheckboxWr').each(function(d) {
@@ -19,7 +19,7 @@ const getCheckedAttributes = () => {
 		const checked = cb.property('checked');
 		const id = cb.property('id');
 		if (checked) {
-			checkedAttributes['wr'].push(id);
+			checkedAttributes['wr'].push(id.substring(0, id.indexOf('Wr')));
 		}
 	});
 	d3.selectAll('.attrCheckboxRb').each(function(d) {
@@ -27,7 +27,7 @@ const getCheckedAttributes = () => {
 		const checked = cb.property('checked');
 		const id = cb.property('id');
 		if (checked) {
-			checkedAttributes['rb'].push(id);
+			checkedAttributes['rb'].push(id.substring(0, id.indexOf('Rb')));
 		}
 	});
 	return checkedAttributes;
@@ -40,8 +40,9 @@ const initializeAttributeCheckboxes = (data) => {
 		.data(allowedAttributes['qb'])
 		.enter()
 		.append('label')
+		.attr('class', 'pointer')
 		.attr('for', function(d, i) {
-			return d;
+			return d + 'Qb';
 		})
 		.text(function(d) {
 			return d;
@@ -50,7 +51,7 @@ const initializeAttributeCheckboxes = (data) => {
 		.attr('type', 'checkbox')
 		.attr('class', 'attrCheckboxQb')
 		.attr('id', function(d, i) {
-			return d;
+			return d + 'Qb';
 		})
 		.attr('onClick', 'updatePlot()');
 
@@ -60,8 +61,9 @@ const initializeAttributeCheckboxes = (data) => {
 		.data(allowedAttributes['wr'])
 		.enter()
 		.append('label')
+		.attr('class', 'pointer')
 		.attr('for', function(d, i) {
-			return d;
+			return d + 'Wr';
 		})
 		.text(function(d) {
 			return d;
@@ -70,7 +72,7 @@ const initializeAttributeCheckboxes = (data) => {
 		.attr('type', 'checkbox')
 		.attr('class', 'attrCheckboxWr')
 		.attr('id', function(d, i) {
-			return d;
+			return d + 'Wr';
 		})
 		.attr('onClick', 'updatePlot()');
 
@@ -80,8 +82,9 @@ const initializeAttributeCheckboxes = (data) => {
 		.data(allowedAttributes['rb'])
 		.enter()
 		.append('label')
+		.attr('class', 'pointer')
 		.attr('for', function(d, i) {
-			return d;
+			return d + 'Rb';
 		})
 		.text(function(d) {
 			return d;
@@ -90,7 +93,7 @@ const initializeAttributeCheckboxes = (data) => {
 		.attr('type', 'checkbox')
 		.attr('class', 'attrCheckboxRb')
 		.attr('id', function(d, i) {
-			return d;
+			return d + 'Rb';
 		})
 		.attr('onClick', 'updatePlot()');
 };

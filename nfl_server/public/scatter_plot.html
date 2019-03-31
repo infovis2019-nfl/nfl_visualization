@@ -21,6 +21,7 @@
                 <button class="tabLinks" onclick="switchPosition(event, 'qbTab')" id="defaultOpen">QB</button>
                 <button class="tabLinks" onclick="switchPosition(event, 'wrTab')">WR</button>
                 <button class="tabLinks" onclick="switchPosition(event, 'rbTab')">RB</button>
+                <button class="tabLinks" onclick="switchPosition(event, 'optionsTab')">Options</button>
             </div>
             <div>
                 <div class="tabPane" id="qbTab">
@@ -52,9 +53,25 @@
                             <div id="playerCheckboxListRb"></div>
                         </div>
                     </div>
-                 </div>   
+                 </div>
+                 <div class="tabPane" id="optionsTab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="toggleLabelCheckbox" class="pointer">
+                                Scatter Plot Labels:
+                                <input type="checkbox" checked id='toggleLabelCheckbox'>
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="normalizeShownPlayersCheckbox" class="pointer">
+                            Normalize:
+                            <input type="checkbox" checked id='normalizeShownPlayersCheckbox'>
+                            </label>
+                        </div>
+                    </div>
+                 </div>
             </div>
-        </div>    
+        </div>
         <script src="normalize.js"></script>
         <script src="tabs.js"></script>
         <script src="attribute_checkboxes.js"></script>
@@ -63,6 +80,7 @@
         <script src="pie_chart.js"></script>
         <script src="tooltip.js"></script>
         <script src="scatter_plot_dot_labels.js"></script>
+        <script src="options.js"></script>
         <script src="scatter_plot.js"></script>
         <script>
             // Get the element with id="defaultOpen" and click on it

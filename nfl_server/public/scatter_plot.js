@@ -124,7 +124,7 @@ const updateScatterPlotDotAndLabelPositions = () => {
 
 	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
 		return xMap(d);
-	})
+	});
 
 	svg
 		.selectAll('.projectionLine')
@@ -135,8 +135,7 @@ const updateScatterPlotDotAndLabelPositions = () => {
 };
 
 const updateScatterPlotYValues = (checkedAttributes, sliderAttributes) => {
-	// TODO: be able to toggle between shownPlayers and allPlayers
-	normalizeSelectedAttributes(shownPlayers, checkedAttributes);
+	normalizeSelectedAttributes(shownPlayers, allPlayersData, checkedAttributes);
 	yValue = function(d) {
 		// Calculate the combined score of each of the selected statistics
 		let combinedScore = 0;
@@ -188,7 +187,7 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 		return d.Player;
 	});
 
-	normalizeSelectedAttributes(shownPlayers, getCheckedAttributes());
+	normalizeSelectedAttributes(shownPlayers, allPlayersData, getCheckedAttributes());
 	updateYAxis();
 	updateXAxis();
 
@@ -249,23 +248,29 @@ const updatePlot = () => {
 	updateScatterPlotYValues(checkedAttributes, sliderAttributes);
 };
 
-let data, qbData, wrData, rbData;
+let qbData, wrData, rbData;
+let allPlayersData = [];
 let shownPlayers = [];
 Promise.all([
-	d3.csv('http://localhost:3000/data/career_passing_stats_10'),
-	d3.csv('http://localhost:3000/data/career_receiving_stats_10'),
-	d3.csv('http://localhost:3000/data/career_rushing_stats_10')
+	d3.csv('/data/career_passing_stats_10'),
+	d3.csv('/data/career_receiving_stats_10'),
+	d3.csv('/data/career_rushing_stats_10')
 ]).then(function(data) {
+	data.forEach(function(data) {
+		allPlayersData = allPlayersData.concat(data);
+	});
+
 	qbData = data[0];
 	wrData = data[1];
 	rbData = data[2];
 
 	initializeAttributeCheckboxes(data);
 	initializeAttributeSliders(data);
+	initializePlayerLabelToggle();
+	initializeNormalizeToggle();
 	loadPlayersFromData(qbData, '#playerCheckboxListQb');
 	loadPlayersFromData(wrData, '#playerCheckboxListWr');
 	loadPlayersFromData(rbData, '#playerCheckboxListRb');
-
 
 	qbData.forEach(function(d) {
 		d.G = +d.G;
