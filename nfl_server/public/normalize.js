@@ -1,8 +1,10 @@
 // The data and attributes that we should be normalizing
-const normalizeSelectedAttributes = (data, attributes) => {
+const normalizeSelectedAttributes = (shownPlayersData, allPlayersData, attributes) => {
 	let qb_attributes = attributes['qb'];
 	let wr_attributes = attributes['wr'];
 	let rb_attributes = attributes['rb'];
+
+	let data = document.getElementById('normalizeShownPlayersCheckbox').checked ? shownPlayersData : allPlayersData;
 
 	let qb_data = data.filter(function(pl) {
 		return pl.Pos == 'qb';

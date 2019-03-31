@@ -14,3 +14,10 @@ const initializePlayerLabelToggle = () => {
 		}
 	});
 };
+
+const initializeNormalizeToggle = () => {
+	const cb = document.getElementById('normalizeShownPlayersCheckbox');
+	cb.addEventListener('click', function() {
+		updatePlot();
+	});
+};
