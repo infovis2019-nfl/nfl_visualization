@@ -31,7 +31,7 @@ const yAxis = d3.axisLeft().scale(yScale);
 
 // setup fill color
 const cValue = function(d) {
-	return d.Player;
+	return d.Pos;
 };
 const color = d3.scaleOrdinal(d3.schemeCategory10);
 
