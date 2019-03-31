@@ -17,7 +17,7 @@ const generateTooltipHtmlRawStats = (d, checkedAttributes) => {
 };
 
 const generateTooltipHtmlPieChart = (d, checkedAttributes) => {
-	let toolTipHtml = d.Player;
+	let toolTipHtml = `<strong>${d.Player}</strong>`;
 	if (checkedAttributes.length > 0) {
 		if (shouldDisplayPieChart(d, checkedAttributes)) {
 			toolTipHtml += '<br/> <h5> Combined Score Breakdown: </h5>';
