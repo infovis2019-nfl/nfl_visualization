@@ -262,10 +262,10 @@ Promise.all([
 
 	initializeAttributeCheckboxes(data);
 	initializeAttributeSliders(data);
+	initializePlayerLabelToggle();
 	loadPlayersFromData(qbData, '#playerCheckboxListQb');
 	loadPlayersFromData(wrData, '#playerCheckboxListWr');
 	loadPlayersFromData(rbData, '#playerCheckboxListRb');
-
 
 	qbData.forEach(function(d) {
 		d.G = +d.G;

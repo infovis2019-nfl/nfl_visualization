@@ -10,6 +10,10 @@ const addOrRemoveDotLabels = () => {
 		.text((d) => d.Player)
 		.attr('x', 0)
 		.attr('y', height - 10)
+		.attr('display', function() {
+			const toggleCB = document.getElementById('toggleLabelCheckbox');
+			return toggleCB.checked ? 'block' : 'none';
+		})
 		.style('text-anchor', 'middle');
 
 	playerLabels.exit().remove();
