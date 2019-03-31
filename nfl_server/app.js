@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const favicon = require('serve-favicon');
 const app = express();
 
 app.use(cors());
 
 app.use(express.static(__dirname + '/public'));
+app.use(favicon(__dirname + '/public/favicon/favicon.ico'));
 
 app.get('/', function(req, res) {
 	res.sendFile(path.join(__dirname + '/public/scatter_plot.html'));
