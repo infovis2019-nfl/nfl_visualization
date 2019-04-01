@@ -229,6 +229,10 @@ const updateScatterPlotXValues = (playerCheckbox) => {
 			if (!displayRawStatsOnClick) generatePieChart(d, checkedAttributes);
 			displayRawStatsOnClick = !displayRawStatsOnClick;
 		})
+		.on('dblclick', function(d) {
+			document.getElementById(d.Player).click();
+			tooltip.style('opacity', 0);
+		})
 		.on('mouseout', function(d) {
 			tooltip.transition().duration(500).style('opacity', 0);
 
