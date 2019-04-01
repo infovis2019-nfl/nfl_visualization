@@ -7,8 +7,8 @@ const shouldDisplayPieChart = (d, checkedAttributes) => {
 };
 
 const generateTooltipHtmlRawStats = (d, checkedAttributes) => {
-	let toolTipHtml = d.Player;
-	toolTipHtml += '<br/> (' + xValue(d) + ', ' + yValue(d) + ')';
+	let toolTipHtml = `<strong>${d.Player}</strong>`;
+	toolTipHtml += '<br/><strong>Coordinates: </strong> (' + xValue(d) + ', ' + yValue(d) + ')';
 	toolTipHtml += '<br/> <strong>Games Played: </strong> ' + d['G'];
 	checkedAttributes.forEach((attribute) => {
 		toolTipHtml += '<br/> <strong>' + attribute + ': </strong> ' + d[attribute];

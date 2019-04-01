@@ -1,7 +1,7 @@
 const allowedAttributes = {
-	qb: [ 'Completion %', 'Yards', 'TD', 'QB Rating', 'Wins' ],
-	wr: [ 'Receptions', 'Yards', 'Yards/Reception', 'TD', 'Yards/Game' ],
-	rb: [ 'Attempts', 'Yards', 'Yards/Attempt', 'TD', 'Yards/Game' ]
+	qb: [ 'Completion %', 'Yards', 'Touchdowns', 'QB Rating', 'Wins' ],
+	wr: [ 'Receptions', 'Yards', 'Yards/Reception', 'Touchdowns', 'Yards/Game' ],
+	rb: [ 'Attempts', 'Yards', 'Yards/Attempt', 'Touchdowns', 'Yards/Game' ]
 };
 
 const getCheckedAttributes = () => {

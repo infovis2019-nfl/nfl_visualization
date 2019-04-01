@@ -119,7 +119,7 @@ const updateScatterPlotDotAndLabelPositions = () => {
 	dotsVerticalTransition.transition().duration(500).attr('cx', xMap);
 
 	const playerNamesVerticalTransition = svg.selectAll('.playerNames').transition().duration(500).attr('y', (d) => {
-		return yMap(d) - 10;
+		return yMap(d) - 12;
 	});
 
 	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
@@ -252,9 +252,9 @@ let qbData, wrData, rbData;
 let allPlayersData = [];
 let shownPlayers = [];
 Promise.all([
-	d3.csv('/data/career_passing_stats_10'),
-	d3.csv('/data/career_receiving_stats_10'),
-	d3.csv('/data/career_rushing_stats_10')
+	d3.csv('/data/career_passing_stats'),
+	d3.csv('/data/career_receiving_stats'),
+	d3.csv('/data/career_rushing_stats')
 ]).then(function(data) {
 	data.forEach(function(data) {
 		allPlayersData = allPlayersData.concat(data);
