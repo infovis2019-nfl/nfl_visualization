@@ -119,7 +119,7 @@ const updateScatterPlotDotAndLabelPositions = () => {
 	dotsVerticalTransition.transition().duration(500).attr('cx', xMap);
 
 	const playerNamesVerticalTransition = svg.selectAll('.playerNames').transition().duration(500).attr('y', (d) => {
-		return yMap(d) - 10;
+		return yMap(d) - 12;
 	});
 
 	playerNamesVerticalTransition.transition().duration(500).attr('x', (d) => {
