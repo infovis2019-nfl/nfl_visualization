@@ -1,11 +1,11 @@
 const sliderAttributes = {
-	qb: [ 'Completion %', 'Yards', 'TD', 'QB Rating', 'Wins' ],
-	wr: [ 'Receptions', 'Yards', 'Yards/Reception', 'TD', 'Yards/Game' ],
-	rb: ['Attempts', 'Yards', 'Yards/Attempt', 'TD', 'Yards/Game']
+	qb: [ 'Completion %', 'Yards', 'Touchdowns', 'QB Rating', 'Wins' ],
+	wr: [ 'Receptions', 'Yards', 'Yards/Reception', 'Touchdowns', 'Yards/Game' ],
+	rb: [ 'Attempts', 'Yards', 'Yards/Attempt', 'Touchdowns', 'Yards/Game' ]
 };
 
 const getSliderAttributes = () => {
-	const weights = { qb: {}, wr: {}, rb:{}};
+	const weights = { qb: {}, wr: {}, rb: {} };
 	d3.selectAll('.weightSliderQb').each(function(d) {
 		const slider = d3.select(this);
 		const weight = slider.property('value');
@@ -71,7 +71,7 @@ const initializeAttributeSliders = (data) => {
 			return d;
 		})
 		.attr('onClick', 'updatePlot()');
-	
+
 	d3
 		.select('#weightColRb')
 		.selectAll('attributeInput')

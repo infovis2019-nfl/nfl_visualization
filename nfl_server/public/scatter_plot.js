@@ -252,9 +252,9 @@ let qbData, wrData, rbData;
 let allPlayersData = [];
 let shownPlayers = [];
 Promise.all([
-	d3.csv('/data/career_passing_stats_10'),
-	d3.csv('/data/career_receiving_stats_10'),
-	d3.csv('/data/career_rushing_stats_10')
+	d3.csv('/data/career_passing_stats'),
+	d3.csv('/data/career_receiving_stats'),
+	d3.csv('/data/career_rushing_stats')
 ]).then(function(data) {
 	data.forEach(function(data) {
 		allPlayersData = allPlayersData.concat(data);

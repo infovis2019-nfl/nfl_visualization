@@ -1,4 +1,4 @@
-Pos,Rk,Player,From,To,Draft,Tm,Lg,G,GS,Tgt,Receptions,Yards,Yards/Reception,TD,Yards/Game,Ctch%,Y/Tgt
+Pos,Rk,Player,From,To,Draft,Tm,Lg,G,GS,Tgt,Receptions,Yards,Yards/Reception,Touchdowns,Yards/Game,Ctch%,Y/Tgt
 wr,1,Jerry Rice,1985,2004,1-16,TOT,NFL,303,284,1640,1549,22895,14.78,197,75.6,,
 wr,2,Larry Fitzgerald,2004,2018,1-3,CRD,NFL,234,232,2154,1303,16279,12.49,116,69.6,60.5%,7.56
 wr,3,Terrell Owens,1996,2010,3-89,TOT,NFL,219,201,1867,1078,15934,14.78,153,72.8,57.7%,8.53
