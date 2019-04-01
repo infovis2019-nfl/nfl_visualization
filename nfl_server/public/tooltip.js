@@ -7,8 +7,8 @@ const shouldDisplayPieChart = (d, checkedAttributes) => {
 };
 
 const generateTooltipHtmlRawStats = (d, checkedAttributes) => {
-	let toolTipHtml = `<strong>${d.Player}</strong>`;
-	toolTipHtml += '<br/><strong>Coordinates: </strong> (' + xValue(d) + ', ' + yValue(d) + ')';
+	let toolTipHtml = `<h5>${d.Player}</h5>`;
+	toolTipHtml += '<strong>Coordinates: </strong> (' + xValue(d) + ', ' + yValue(d) + ')';
 	toolTipHtml += '<br/> <strong>Games Played: </strong> ' + d['G'];
 	checkedAttributes.forEach((attribute) => {
 		toolTipHtml += '<br/> <strong>' + attribute + ': </strong> ' + d[attribute];
@@ -17,13 +17,13 @@ const generateTooltipHtmlRawStats = (d, checkedAttributes) => {
 };
 
 const generateTooltipHtmlPieChart = (d, checkedAttributes) => {
-	let toolTipHtml = `<strong>${d.Player}</strong>`;
+	let toolTipHtml = `<h5>${d.Player}</h5>`;
 	if (checkedAttributes.length > 0) {
 		if (shouldDisplayPieChart(d, checkedAttributes)) {
-			toolTipHtml += '<br/> <h5> Combined Score Breakdown: </h5>';
+			toolTipHtml += '<strong> Combined Score Breakdown: </strong>';
 			toolTipHtml += '<br/> <div id="tipDiv"></div><br/>';
 		} else {
-			toolTipHtml += '<br/> <h5> Combined Score: 0</h5>';
+			toolTipHtml += '<br/> <strong> Combined Score: 0</strong>';
 		}
 	}
 	return toolTipHtml;
